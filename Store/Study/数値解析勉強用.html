@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>数値解析勉強用</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="table.css">
+  </head>
+  <body>
+    <header><h1>数値解析勉強用</h1></header>
+    <p class="right">f18102 4J 25 鈴木穣成</p>
+    <h2>数値積分の解法</h2>
+    <section>
+      <h3>台形法</h3>
+      <section>
+        <h4>理論</h4>
+        <p>刻み幅 $h=x_1-x_0$ とする。区間 $[x_0,x_1]$ において、$f(x)$ の積分は次のように近似できる。</p>
+        \begin{eqnarray}
+        \int_{x_0}^{x_1}f(x)dx &\fallingdotseq & \frac{f(x_0)+f(x_1)}{2}(b-a) \\
+        &\fallingdotseq &\frac{f(x_0)+f(x_1)}{2}h
+        \end{eqnarray}
+        <p>よって、区間 $[a,b]$ を積分するとき、その区間を $n$ 分割したときの $n+1$ 個の $x$ 座標 $x_0,x_1,\cdots,x_n$ を使って次のように近似できる。</p>
+        \begin{eqnarray}
+        \int_a^bf(x)dx &\fallingdotseq & \frac{h}{2}\left\{f(x_0) + 2\sum_{1\leq i \leq n-1}f(x_i)+f(x_n)\right\} \\\\
+        &\fallingdotseq & h\left(\frac{f(x_0)+f(x_n)}{2}+\sum_{1\leq i \leq n-1}f(x_i)\right) \\
+        &\fallingdotseq & h\left(\frac{f(a)+f(b)}{2}+\sum_{1\leq i \lt n}f(a+hi)\right)
+        \end{eqnarray}
+      </section>
+      <h3>シンプソン法</h3>
+      <section>
+        <h4>理論</h4>
+        <p>刻み幅 $h=x_1-x_0$ とする。区間 $[x_0,x_2]$ における関数 $f(x)$ を二次方程式 $y=ax^2+bx+c$ で近似するとき、次の $3$ 点を与えることによって、係数 $a, b, c$ の値を決定することができる。</p>
+        $$(x_0, f(x_0)),\,\,(x_1, f(x_1)),\,\,(x_2, f(x_2))$$
+        <p>次の方程式によって係数値を求めることができる。</p>
+        $$
+        \begin{pmatrix}
+        x_0^2 & x_0 & 1 \\
+        x_1^2 & x_1 & 1 \\
+        x_2^2 & x_2 & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+        a \\ b \\ c
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+        f(x_0) \\ f(x_1) \\ f(x_2)
+        \end{pmatrix}
+        $$
+        <p>クラメルの公式によってこれを求める。</p>
+        $$
+        \begin{eqnarray}
+        p &=&
+        \begin{vmatrix}
+        x_0^2 & x_0 & 1 \\
+        x_1^2 & x_1 & 1 \\
+        x_2^2 & x_2 & 1
+        \end{vmatrix} \\
+        &=&
+        x_0^2x_1+x_1^2x_2+x_2^2x_0-x_2^2x_1-x_1^2x_0-x_0^2x_2
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+        a
+        &=&
+        \frac{\displaystyle
+        \begin{vmatrix}
+        f(x_0) & x_0 & 1 \\
+        f(x_1) & x_1 & 1 \\
+        f(x_2) & x_2 & 1
+        \end{vmatrix}
+        }{p}\\
+        &=&
+        \frac{f(x_0)x_1 + f(x_1)x_2 + f(x_2)x_0 - f(x_2)x_1 - f(x_1)x_0 - f(x_0)x_2}{x_0^2x_1+x_1^2x_2+x_2^2x_0-x_2^2x_1-x_1^2x_0-x_0^2x_2} \\
+        &=&
+        \frac{f(x_0)(x_1-x_2)+f(x_1)(x_2-x_0)+f(x_2)(x_0-x_1)}{x_0^2(x_1-x_2)+x_1^2(x_2-x_0)+x_2^2(x_0-x_1)} \\
+        &=&
+        \frac{h(-f(x_0)+2f(x_1)-f(x_2))}{h(-x_0^2+2x_1^2-x_2^2)} \\
+        &=&
+        \frac{f(x_0)-2f(x_1)+f(x_2)}{x_0^2-2x_1^2+x_2^2} \\
+        &=&
+        \frac{f(x_0)-2f(x_1)+f(x_2)}{x_0^2-2(x_0+h)^2+(x_0+2h)^2} \\
+        &=&
+        \frac{f(x_0)-2f(x_1)+f(x_2)}{x_0^2-2(x_0^2+2x_0h+h^2)+(x_0^2+4x_0h+4h^2)} \\
+        &=&
+        \frac{f(x_0)-2f(x_1)+f(x_2)}{2h^2}
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+        b
+        &=&
+        \frac{\displaystyle
+        \begin{vmatrix}
+        x_0^2 & f(x_0) & 1 \\
+        x_1^2 & f(x_1) & 1 \\
+        x_2^2 & f(x_2) & 1
+        \end{vmatrix}
+        }{p}\\
+        &=&
+        \frac{x_0^2f(x_1) + x_1^2f(x_2) + x_2^2f(x_0) - x_2^2f(x_1) - x_1^2f(x_0) - x_0^2f(x_2)}{x_0^2x_1+x_1^2x_2+x_2^2x_0-x_2^2x_1-x_1^2x_0-x_0^2x_2} \\
+        &=&
+        \frac{f(x_0)(x_2^2-x_1^2)+f(x_1)(x_0^2-x_2^2)+f(x_2)(x_1^2-x_0^2)}{x_0^2(x_1-x_2)+x_1^2(x_2-x_0)+x_2^2(x_0-x_1)} \\
+        &=&
+        \frac{f(x_0)(x_2-x_1)(x_2+x_1)+f(x_1)(x_0-x_2)(x_0+x_2)+f(x_2)(x_1-x_0)(x_1+x_0)}{x_0^2(x_1-x_2)+x_1^2(x_2-x_0)+x_2^2(x_0-x_1)} \\
+        &=&
+        \frac{h(f(x_0)(x_2+x_1)-2f(x_1)(x_0+x_2)+f(x_2)(x_1+x_0))}{h(-x_0^2+2x_1^2-x_2^2)} \\
+        &=&
+        -\frac{f(x_0)(x_2+x_1)-2f(x_1)(x_0+x_2)+f(x_2)(x_1+x_0)}{x_0^2-2x_1^2+x_2^2} \\
+        &=&
+        -\frac{f(x_0)(x_2+x_1)-2f(x_1)(x_0+x_2)+f(x_2)(x_1+x_0)}{x_0^2-2(x_0+h)^2+(x_0+2h)^2} \\
+        &=&
+        -\frac{f(x_0)(x_2+x_1)-2f(x_1)(x_0+x_2)+f(x_2)(x_1+x_0)}{x_0^2-2(x_0^2+2x_0h+h^2)+(x_0^2+4x_0h+4h^2)} \\
+        &=&
+        -\frac{f(x_0)(x_2+x_1)-2f(x_1)(x_0+x_2)+f(x_2)(x_1+x_0)}{2h^2}
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+        c
+        &=&
+        \frac{\displaystyle
+        \begin{vmatrix}
+        x_0^2 & x_0 & f(x_0) \\
+        x_1^2 & x_1 & f(x_1) \\
+        x_2^2 & x_2 & f(x_2)
+        \end{vmatrix}
+        }{p} \\
+        &=&
+        \frac{x_0^2x_1f(x_2) + x_1^2x_2f(x_0) + x_2^2x_0f(x_1) - x_2^2x_1f(x_0) - x_1^2x_0f(x_2) - x_0^2x_2f(x_1)}{x_0^2x_1+x_1^2x_2+x_2^2x_0-x_2^2x_1-x_1^2x_0-x_0^2x_2} \\
+        &=&
+        \frac{f(x_0)x_1x_2(x_1-x_2)+f(x_1)x_2x_0(x_2-x_0)+f(x_2)x_0x_1(x_0-x_1)}{x_0^2(x_1-x_2)+x_1^2(x_2-x_0)+x_2^2(x_0-x_1)} \\
+        &=&
+        \frac{h(-f(x_0)x_1x_2+2f(x_1)x_2x_0-f(x_2)x_0x_1)}{h(-x_0^2+2x_1^2-x_2^2)} \\
+        &=&
+        \frac{f(x_0)x_1x_2 - 2f(x_1)x_2x_0 + f(x_2)x_0x_1}{x_0^2-2x_1^2+x_2^2} \\
+        &=&
+        \frac{f(x_0)x_1x_2 - 2f(x_1)x_2x_0 + f(x_2)x_0x_1}{x_0^2-2(x_0+h)^2+(x_0+2h)^2} \\
+        &=&
+        \frac{f(x_0)x_1x_2 - 2f(x_1)x_2x_0 + f(x_2)x_0x_1}{x_0^2-2(x_0^2+2x_0h+h^2)+(x_0^2+4x_0h+4h^2)} \\
+        &=&
+        \frac{f(x_0)x_1x_2 - 2f(x_1)x_2x_0 + f(x_2)x_0x_1}{2h^2}
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+          \left\{
+            \begin{array}{l}
+              \displaystyle a = \frac{f(x_0)-2f(x_1)+f(x_2)}{2h^2} \\
+              \displaystyle b = -\frac{f(x_0)(x_2+x_1)-2f(x_1)(x_0+x_2)+f(x_2)(x_1+x_0)}{2h^2} \\
+              \displaystyle c = \frac{f(x_0)x_1x_2 - 2f(x_1)x_2x_0 + f(x_2)x_0x_1}{2h^2}
+            \end{array}
+          \right.
+        \end{eqnarray}
+        $$
+        <p>これを利用して、二次方程式 $y=ax^2+bx+c$ を区間 $[x_0,x_2]$ で積分すると、</p>
+        \begin{eqnarray}
+        &&\int^{x_2}_{x_0}(ax^2+bx+c)dx \\
+        &=& \left[\frac{a}{3}x^3+\frac{b}{2}x^2+cx\right]^{x_2}_{x_0} \\
+        &=& \frac{a}{3}(x_2^3-x_0^3)+\frac{b}{2}(x_2^2-x_0^2)+c(x_2-x_0) \\
+        &=& \frac{a}{3}(x_2-x_0)(x_2^2+x_2x_0+x_0^2)+\frac{b}{2}(x_2-x_0)(x_2+x_0)+c(x_2-x_0) \\
+        &=& 2h\left(\frac{a}{3}(x_2^2+x_2x_0+x_0^2)+\frac{b}{2}(x_2+x_0)+c\right) \\
+        &=& 2h\left\{ \phantom{+}\frac{f(x_0)-2f(x_1)+f(x_2)}{6h^2}(x_2^2+x_2x_0+x_0^2) \right.\\
+        &\phantom{=}&\phantom{2h0}-\frac{f(x_0)(x_1+x_2)-2f(x_1)(x_2+x_0)+f(x_2)(x_0+x_1)}{4h^2}(x_2+x_0) \\
+        &\phantom{=}&\phantom{2h0}+\frac{f(x_0)x_1x_2-2f(x_1)x_2x_0+f(x_2)x_0x_1}{2h^2} \left.\phantom{\frac{0}{0}}\right\}\\
+        &=& \frac{1}{h}\left\{ \phantom{+}\frac{f(x_0)-2f(x_1)+f(x_2)}{3}(x_0^2+4hx_0+4h^2+x_0^2+2hx_0+x_0^2) \right. \\
+        &\phantom{=}&\phantom{\frac{1}{h}0}-\frac{f(x_0)(2x_0+3h)-2f(x_1)(2x_0+2h)+f(x_2)(2x_0+h)}{2}(2x_0+2h) \\
+        &\phantom{=}&\phantom{\frac{1}{h}0}+f(x_0)(x_0+h)(x_0+2h)-2f(x_1)(x_0+2h)x_0+f(x_2)x_0(x_0+h) \left.\phantom{\frac{0}{0}}\right\}\\
+        &=&\frac{1}{h}\left\{ \phantom{+}\frac{f(x_0)-2f(x_1)+f(x_2)}{3}(3x_0^2+6hx_0+4h^2) \right. \\
+        &\phantom{=}&\phantom{\frac{1}{h}0}-\frac{f(x_0)(2x_0+3h)-2f(x_1)(2x_0+2h)+f(x_2)(2x_0+h)}{2}(2x_0+2h) \\
+        &\phantom{=}&\phantom{\frac{1}{h}0}+f(x_0)(x_0^2+3hx_0+2h^2)-2f(x_1)(x_0^2+2hx_0)+f(x_2)(x_0^2+hx_0)\left.\phantom{\frac{0}{0}}\right\} \\
+        &=&\frac{1}{h}\left\{ \,\phantom{+}f(x_0)\left( x_0^2+2hx_0+\frac{4}{3}h^2-(2x_0+3h)(x_0+h)+x_0^2+3hx_0+2h^2 \right) \right. \\
+        &\phantom{=}&\phantom{\frac{1}{h}0}+f(x_1)\left( -2x_0^2-4hx_0-\frac{8}{3}h^2+(2x_0+2h)^2-2(x_9^2+2hx_0) \right) \\
+        &\phantom{=}&\phantom{\frac{1}{h}0}+f(x_2)\left( x_0^2+2hx_0+\frac{4}{3}h^2-(2x_0+h)(x_0+h)+x_0^2+hx_0 \right) \left.\phantom{\frac{0}{0}}\right\} \\
+        &=&\frac{1}{h}\left\{ \,\phantom{+}f(x_0)\left( x_0^2+2hx_0+\frac{4}{3}h^2-2x_0^2-2hx_0-3hx_0-3h^2+x_0^2+3hx_0+2h^2 \right) \right. \\
+        &\phantom{=}&\phantom{\frac{1}{h}0}+f(x_1)\left( -2x_0^2-4hx_0-\frac{8}{3}h^2+4x_0^2+8hx_0+4h^2-2x_0^2-4hx_0 \right) \\
+        &\phantom{=}&\phantom{\frac{1}{h}0}+f(x_2)\left( x_0^2+2hx_0+\frac{4}{3}h^2-2x_0^2-2hx_0-hx_0-h^2+x_0^2+hx_0 \right) \left. \phantom{\frac{0}{0}} \right\} \\
+        &=& \frac{1}{h}\left\{ f(x_0)\frac{1}{3}h^2+f(x_1)\frac{4}{3}h^2+f(x_2)\frac{1}{3}h^2 \right\} \\
+        &=& \frac{h}{3}\left(\phantom{\frac{|}{|}}f(x_0)+4f(x_1)+f(x_2)\phantom{\frac{|}{|}}\right)
+        \end{eqnarray}
+        $$
+        \int^{x_2}_{x_0}(ax^2+bx+c)dx = \frac{h}{3}\left(\phantom{\frac{|}{|}}f(x_0)+4f(x_1)+f(x_2)\phantom{\frac{|}{|}}\right)
+        $$
+        <p>よって、区間 $[x_0,x_2]$ において、関数 $f(x)$ の積分値は次のように近似できる。</p>
+        $$
+        \int_{x_0}^{x_2}f(x)dx \fallingdotseq \frac{h}{3}\left(\phantom{\frac{|}{|}}f(x_0)+4f(x_1)+f(x_2)\phantom{\frac{|}{|}}\right)
+        $$
+        <p>区間 $[a,b]$ において $f(x)$ を積分するとき、その区間を $2n$ 分割したときの $2n+3$ 個の $x$ 座標 $x_0,x_1,\cdots,x_{2n}$ を使って次のように近似できる。</p>
+        <p>$h = (b-a)/2n$ と表される。</p>
+        $$
+        \begin{eqnarray}
+        \int^{b}_{a}f(x)dx
+        &=& \int_{x_0}^{x_2}f(x)dx + \int_{x_2}^{x_4}f(x)dx + \cdots + \int_{x_{2n-2}}^{x_{2n}}f(x)dx \\
+        &\fallingdotseq& \frac{h}{3}\left(\phantom{\frac{|}{|}}f(x_0)+4f(x_1)+2f(x_2)+4f(x_3) \right. \\
+        &&\left.+\cdots+2f(x_{2n-2})+4f(x_{2n-1})+f(x_{2n})\phantom{\frac{|}{|}}\right) \\
+        &\fallingdotseq& \frac{h}{3}\left( f(x_0)+\sum_{0\le i\le n-1}4f(x_{2i+1})+\sum_{1\le j\le n-1}2f(x_{2j})+f(x_{2n}) \right) \\
+        &\fallingdotseq& \frac{h}{3}\left( f(a)+f(b)+4\sum_{0\le i\lt n}f(a+h(2i+1)) + 2\sum_{1\le j\lt n}f(a+h(2j)) \right)
+        \end{eqnarray}
+        $$
+      </section>
+    </section>
+    <script src="index.js"></script>
+    <script>
+    MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['$$', '$$']]
+      }
+    };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+  </body>
+</html>
