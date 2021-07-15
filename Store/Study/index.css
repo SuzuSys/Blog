@@ -1,0 +1,36 @@
+header h1 {
+    text-align: center;
+    margin: 30px;
+    font-family: serif;
+}
+section {
+    margin-left: 30px;
+}
+h2, h3, h4, h5, h6 {
+    font-size: 1.6em;
+    margin: 5px;
+    font-family: serif;
+    color: steelblue;
+}
+p {
+    margin: 2px;
+}
+code {
+    font-family: note monospace,SFMono-Regular,Consolas,Menlo,Courier,monospace;
+}
+div.code {
+    border: 2px solid steelblue;
+    padding: 10px;
+    margin: 5px;
+    break-inside: avoid-page;
+}
+div.doavoid {
+    break-inside: auto;
+}
+p.right {
+    text-align: right;
+    font-family: serif;
+}
+p.center {
+    text-align: center;
+}
