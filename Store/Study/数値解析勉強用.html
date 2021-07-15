@@ -197,6 +197,22 @@
         \end{eqnarray}
         $$
       </section>
+      <h3>オイラー法</h3>
+      <section>
+        <p>常微分方程式を次のように置く。</p>
+        $$\frac{dx}{dt} = f(t,x)$$
+        <p>刻み幅を $h$ とする。</p>
+        <p>時刻 $t+h$ における値 $x(t+h)$ は次のように計算する。</p>
+        $$x(t+h) = x(t) + h\cdot f(t,x)$$
+        <p>テイラー展開になぞらえると、$1$ ステップの推定誤差は $O(h^2)$ であることがわかる。</p>
+        $$
+        \begin{eqnarray}
+        x(t+h)
+        &=& \sum_{n=0}^1\frac{x^{(n)}(t)}{n!}h^n+O(h^2) \\
+        &=& x(t) + h\cdot f(t,x) + O(h^2)
+        \end{eqnarray}
+        $$
+      </section>
     </section>
     <script src="index.js"></script>
     <script>
