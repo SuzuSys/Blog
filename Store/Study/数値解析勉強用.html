@@ -246,10 +246,13 @@
         $$
         $$
         \begin{eqnarray}
-        k_2 &=& f \left( t+\frac{h}{2}, x+\frac{h}{2} \right) \\
+        k_2 &=& f \left( t+\frac{h}{2}, x+\frac{h}{2}k_1 \right) \\
         &=& \sum_{i=0}^3 \frac{1}{i!}\left( \frac{h}{2}\frac{\partial}{\partial t} +\frac{h}{2}f\frac{\partial}{\partial x} \right)^i f + O(h^4) \\
         &=& \sum_{i=0}^3 \frac{1}{i!}\left(\frac{h}{2}\right)^i\left( \frac{\partial}{\partial t} + f\frac{\partial}{\partial x} \right)^i f + O(h^4) \\
-        &=& f + \frac{h}{2}\left( \frac{\partial}{\partial t} + f\frac{\partial}{\partial x} \right)f + \frac{1}{2}\frac{h^2}{4}\left( \frac{\partial^2}{\partial t^2} + 2f\frac{\partial^2}{\partial t \partial x} + f^2\frac{partial^2}{\partial x^2}\right)f
+        &=& f + \frac{h}{2}\left( \frac{\partial}{\partial t} + f\frac{\partial}{\partial x} \right)f + \frac{1}{2}\frac{h^2}{4}\left( \frac{\partial^2}{\partial t^2} + 2f\frac{\partial^2}{\partial t \partial x} + f^2\frac{\partial^2}{\partial x^2}\right)f \\
+        && + \frac{1}{6}\frac{h^3}{8}\left( \frac{\partial^3}{\partial t^3} + 3f\frac{\partial^3}{\partial t^2 \partial x} + 3f^2\frac{\partial^3}{\partial t \partial x^2} + f^3\frac{\partial^3}{\partial x^3} \right)f + O(h^4) \\
+        &=& f + \frac{h}{2}(f_t + f_xf) + \frac{h^2}{8}(f_{tt}+2f_{tx}f+f_{xx}f^2) \\
+        && +\frac{h^3}{48}(f_{ttt}+2f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3) + O(h^4)
         \end{eqnarray}
         $$
       </section>
