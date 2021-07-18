@@ -262,7 +262,10 @@
         && \frac{h^3}{48}(f_{ttt}+3f_{ttx}k_2+3f_{txx}k_2^2+f_{xxx}k_2^3) + O(h^4) \\
         &=& f + \frac{h}{2}\left\{ f_t + f_x\left( f + \frac{h}{2}(f_t+f_xf) + \frac{h^2}{8}(f_{tt}+2f_{tx}f + f_{xx}f^2) + O(h^3) \right) \right\} \\
         && +\frac{h^2}{8} \left\{ f_{tt} + 2f_{tx}\left( f + \frac{h}{2}(f_t+f_xf) + O(h^2) \right) + f_{xx}\left( f + \frac{h}{2}(f_t+f_xf)+O(h^2) \right)^2 \right\} \\
-        && +\frac{h^3}{48}\left\{ f_{ttt} + 3f_{ttx}(f+O(h)) + 3f_{txx}(f+O(h))^2+f_{xxx}(f+O(h))^3 \right\} + O(h^4) 
+        && +\frac{h^3}{48}\left\{ f_{ttt} + 3f_{ttx}(f+O(h)) + 3f_{txx}(f+O(h))^2+f_{xxx}(f+O(h))^3 \right\} + O(h^4) \\
+        &=& f + \frac{h}{2} \left( f_t + f_xf + \frac{h}{2}f_tf_x + \frac{h}{2}f_x^2f+\frac{h^2}{8}f_{tt}f_x+\frac{h^2}{4}f_{tx}f_xf+\frac{h^2}{8}f_{xx}f_xf^2+O(h^3) \right) \\
+        && +\frac{h^2}{8}\left\{ f_{tt} + 2f_{tx}f + hf_{tx}f_t + hf_{tx}f_xf+O(h^2) \right. \\
+        && \phantom{+\frac{h^2}{8}\}} +f_{xx}\left( f^2+hf(f_t+f_xf) +O(h^2) + \frac{h^2}{4}(f_t^2+2f_tf_xf+f_x^2f^2) +O(h^2)+O(h^4) \right) 
         \end{eqnarray}
         $$
       </section>
