@@ -256,12 +256,14 @@
         \end{eqnarray}
         $$
         $$
+        \begin{eqnarray}
         k_3 &=& f\left( t+\frac{h}{2}, x+\frac{h}{2}k_2 \right) \\
         &=& f + \frac{h}{2}(f_t + f_xk_2) + \frac{h^2}{8}(f_{tt} + 2f_{tx}k_2 + f_{xx}k_2^2) \\
         && \frac{h^3}{48}(f_{ttt}+3f_{ttx}k_2+3f_{txx}k_2^2+f_{xxx}k_2^3) + O(h^4) \\
         &=& f + \frac{h}{2}\left\{ f_t + f_x\left( f + \frac{h}{2}(f_t+f_xf) + \frac{h^2}{8}(f_{tt}+2f_{tx}f + f_{xx}f^2) + O(h^3) \right) \right\} \\
         && +\frac{h^2}{8} \left\{ f_{tt} + 2f_{tx}\left( f + \frac{h}{2}(f_t+f_xf) + O(h^2) \right) + f_{xx}\left( f + \frac{h}{2}(f_t+f_xf)+O(h^2) \right)^2 \right\} \\
         && +\frac{h^3}{48}\left\{ f_{ttt} + 3f_{ttx}(f+O(h)) + 3f_{txx}(f+O(h))^2+f_{xxx}(f+O(h))^3 \right\} + O(h^4) 
+        \end{eqnarray}
         $$
       </section>
     </section>
