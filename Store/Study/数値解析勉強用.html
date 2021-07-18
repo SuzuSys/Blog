@@ -240,7 +240,18 @@
         R_{n+1} = \frac{1}{(n+1)!}\left( h\frac{\partial}{\partial x} + k\frac{\partial}{\partial y} \right)^{n+1} f(a + \theta h,b+\theta k)
         $$
         <p class="center">を満たす $\theta$ が $0\lt\theta\lt 1$ の間に存在する。</p>
-        <p>$k_1, k_2, k_3, k_4$ を展開する。</p>
+        <p>これを踏まえ、 $k_1, k_2, k_3, k_4$ を展開する。</p>
+        $$
+        k_1 = f(t,x)
+        $$
+        $$
+        \begin{eqnarray}
+        k_2 &=& f \left( t+\frac{h}{2}, x+\frac{h}{2} \right) \\
+        &=& \sum_{i=0}^3 \frac{1}{i!}\left( \frac{h}{2}\frac{\partial}{\partial t} +\frac{h}{2}f\frac{\partial}{\partial x} \right)^i f + O(h^4) \\
+        &=& \sum_{i=0}^3 \frac{1}{i!}\left(\frac{h}{2}\right)^i\left( \frac{\partial}{\partial t} + f\frac{\partial}{\partial x} \right)^i f + O(h^4) \\
+        &=& f + \frac{h}{2}\left( \frac{\partial}{\partial t} + f\frac{\partial}{\partial x} \right)f + \frac{1}{2}\frac{h^2}{4}\left( \frac{\partial^2}{\partial t^2} + 2f\frac{\partial^2}{\partial t \partial x} + f^2\frac{partial^2}{\partial x^2}\right)f
+        \end{eqnarray}
+        $$
       </section>
     </section>
     <script src="index.js"></script>
