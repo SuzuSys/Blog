@@ -199,6 +199,7 @@
       </section>
       <h3>オイラー法</h3>
       <section>
+        <h4>理論</h4>
         <p>常微分方程式を次のように置く。</p>
         $$\frac{dx}{dt} = f(t,x)$$
         <p>刻み幅を $h$ とする。</p>
@@ -215,11 +216,21 @@
       </section>
       <h3>ルンゲ・クッタ法</h3>
       <section>
+        <h4>理論</h4>
         <p>常微分方程式を次のように置く。</p>
         $$\frac{dx}{dt} = f(t,x)$$
         <p>刻み幅を $h$ とする。</p>
         <p>時刻 $t+h$ における値 $x(t+h)$ は次のように計算する。</p>
-        
+        $$
+        \begin{eqnarray}
+        x(t+h) &=& x(t) + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4) + O(h^5) \\\\
+        k_1 &=& f(t,x) \\
+        k_2 &=& f\left( t + \frac{h}{2} , x + \frac{h}{2}k_1 \right) \\
+        k_3 &=& f\left( t + \frac{h}{2} , x + \frac{h}{2}k_2 \right) \\
+        k_4 &=& f\left( t + h , x + hk_4 \right)
+        \end{eqnarray}
+        x(t+h) = x(t) + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4) + O(h^5)
+        $$
       </section>
     </section>
     <script src="index.js"></script>
