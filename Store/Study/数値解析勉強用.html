@@ -368,6 +368,65 @@
         && \phantom{+\frac{h^3}{24}(0}  + 6f_tf_x^2 + 6f_x^3f ) + O(h^4)
         \end{eqnarray}
         $$
+        <p>すなわち、ルンゲクッタ法の公式は次のように展開される。</p>
+        $$
+        \begin{eqnarray}
+        x(t+h)-x(t) &=& \frac{h}{6} \left[ \phantom{\frac{0}{0}} \right. \\
+        && \phantom{\frac{h}{6}0} f + 2f + 2f + f \\
+        && \phantom{\frac{h}{6}0} + h \{\phantom{\{+}f_t + f_xf \\
+        && \phantom{\frac{h}{6}0 + h \{} + f_t + f_xf \\
+        && \phantom{\frac{h}{6}0 + h \{} + f_t + f_xf\phantom{0} \} \\
+        && \phantom{\frac{h}{6}0} + h^2 \left\{ \phantom{+\{} \frac{1}{4}(f_{tt} + 2f_{tx}f + f_{xx}f^2) \right. \\
+        && \phantom{\frac{h}{6}0 + h^2 \{0} +\frac{1}{4}(f_{tt} + 2f_{tx}f + f_{xx}f^2 + 2f_tf_x + 2f_x^2f) \\
+        && \left. \phantom{\frac{h}{6}0 + h^2 \{0} +\frac{1}{2}(f_{tt} + 2f_{tx}f + f_{xx}f^2 + f_tf_x + f_x^2f) \phantom{0} \right\} \\
+        && \phantom{\frac{h}{6}0} + h^3 \left\{ \phantom{+\{} \frac{1}{24}(f_{ttt}+3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3) \right. \\
+        && \phantom{\frac{h}{6}0 + h^2 \{0} +\frac{1}{24}(f_{ttt}+3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 \\
+        && \phantom{\frac{h}{6}0 + h^2 \{0\frac{1}{24}(00} +3f_{tt}f_x + 12f_{tx}f_xf + 9f_{xx}f_xf^2 + 6f_{tx}f_t + 6f_{xx}f_tf) \\
+        && \phantom{\frac{h}{6}0 + h^2 \{0} +\frac{1}{24}(4f_{ttt}+12f_{ttx}f + 12f_{txx}f^2 + 4f_{xxx}f^3 \\
+        && \phantom{\frac{h}{6}0 + h^2 \{0\frac{1}{24}(00} +3f_{tt}f_x + 18f_{tx}f_xf + 15f_{xx}f_xf^2 + 12f_{tx}f_t + 12f_{xx}f_tf \\
+        &&\left.\left.  \phantom{\frac{h}{6}0 + h^2 \{0\frac{1}{24}(00} +6f_tf_x^2+6f_x^3f) \phantom{\frac{0}{0}} \right\} \phantom{0} \right]\\
+        && +O(h^5)
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+        x(t+h)-x(t)&=& hf \\
+        && +\frac{h^2}{2}(f_t+f_xf) \\
+        && +\frac{h^3}{6}(f_{tt}+2f_{tx}f + f_{xx}f^2 + f_tf_x + f_x^2f) \\
+        && +\frac{h^4}{24} (f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 \\
+        && \phantom{+\frac{h^4}{24} (} + f_{tt}f_x + 5f_{tx}f_xf + 4f_{xx}f_xf^2 + 3f_{tx}f_t + 3f_{xx}f_tf + f_tf_x^2 + f_x^3f ) \\
+        && +O(h^5)
+        \end{eqnarray}
+        $$
+        <p>次に $x(t+h)$ をテイラー展開して、ルンゲクッタ法の公式を展開した式と一致することを確かめる。</p>
+        $$
+        \begin{eqnarray}
+        x(t+h)&=&\sum_{i=0}^4\frac{i!}{x^{(i)}(t)}h^i + O(h^5) \\
+        x(t+h)-x(t)&=&\sum_{i=1}^4\frac{i!}{x^{(i)}(t)}h^i + O(h^5) \\
+        &=& h\frac{dx}{dt}+\frac{h^2}{2}\frac{d^2x}{dt^2} + \frac{h^3}{6}\frac{d^3x}{dt^3} + \frac{h^4}{24}\frac{d^4x}{dt^4} + O(h^5) \\
+        &=& hf + \frac{h^2}{2}\frac{df}{dt} + \frac{h^3}{6}\frac{d^2f}{dt^2} + \frac{h^4}{24}\frac{d^3f}{dt^3} + O(h^5)
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+        \frac{df}{dt} &=& \frac{\partial f}{\partial t}\frac{dt}{dt} + \frac{\partial f}{\partial x}\frac{dx}{dt} \\
+        &=& f_t + f_xf
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+        \frac{d^2f}{dt^2} &=&  \frac{d}{dt}(f_t+f_xf) \\
+        &=& \frac{df_t}{dt} + \frac{df_x}{dt}f + f_x\frac{df}{dt} \\
+        &=& \frac{\partial f_t}{\partial t}\frac{dt}{dt} + \frac{\partial f_t}{\partial x}\frac{dx}{dt} + \left( \frac{\partial f_x}{\partial t}\frac{dt}{dt} + \frac{\partial f_x}{\partial x}\frac{dx}{dt} \right)f + f_x\left( \frac{\partial f}{\partial t}\frac{dt}{dt} + \frac{\partial f}{\partial x}\frac{dx}{dt} \right) \\
+        &=& f_{tt} + 2f_{tx}f + f_{xx}f^2 + f_tf_x + f_x^2f
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+        \frac{d^3f}{dt^3} &=& \frac{d}{dt}( f_{tt} + 2f_{tx}f + f_{xx}f^2 + f_tf_x + f_x^2f ) \\
+        
+        \end{eqnarray}
+        $$
       </section>
     </section>
     <script src="index.js"></script>
