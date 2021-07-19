@@ -255,18 +255,22 @@
         && +\frac{h^3}{48}(f_{ttt}+2f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3) + O(h^4)
         \end{eqnarray}
         $$
+        <p>$k_3$ の展開では $k_2$ を何次までテイラー展開するかということに注意する。</p>
         $$
         \begin{eqnarray}
         k_3 &=& f\left( t+\frac{h}{2}, x+\frac{h}{2}k_2 \right) \\
         &=& f + \frac{h}{2}(f_t + f_xk_2) + \frac{h^2}{8}(f_{tt} + 2f_{tx}k_2 + f_{xx}k_2^2) \\
-        && \frac{h^3}{48}(f_{ttt}+3f_{ttx}k_2+3f_{txx}k_2^2+f_{xxx}k_2^3) + O(h^4) \\
+        && +\frac{h^3}{48}(f_{ttt}+3f_{ttx}k_2+3f_{txx}k_2^2+f_{xxx}k_2^3) + O(h^4)
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
         &=& f + \frac{h}{2}\left\{ f_t + f_x\left( f + \frac{h}{2}(f_t+f_xf) + \frac{h^2}{8}(f_{tt}+2f_{tx}f + f_{xx}f^2) + O(h^3) \right) \right\} \\
         && +\frac{h^2}{8} \left\{ f_{tt} + 2f_{tx}\left( f + \frac{h}{2}(f_t+f_xf) + O(h^2) \right) + f_{xx}\left( f + \frac{h}{2}(f_t+f_xf)+O(h^2) \right)^2 \right\} \\
         && +\frac{h^3}{48}\left\{\phantom{\frac{0}{0}} f_{ttt} + 3f_{ttx}(f+O(h)) + 3f_{txx}(f+O(h))^2+f_{xxx}(f+O(h))^3 \phantom{\frac{0}{0}} \right\} + O(h^4) \\
         &=& f + \frac{h}{2} \left( f_t + f_xf + \frac{h}{2}f_tf_x + \frac{h}{2}f_x^2f+\frac{h^2}{8}f_{tt}f_x+\frac{h^2}{4}f_{tx}f_xf+\frac{h^2}{8}f_{xx}f_xf^2+O(h^3) \right) \\
         && +\frac{h^2}{8}\left\{ \phantom{\frac{0}{0}} f_{tt} + 2f_{tx}f + hf_{tx}f_t + hf_{tx}f_xf+O(h^2) \right. \\
-        && \phantom{+\frac{h^2}{8}\{ \frac{0}{0}} +f_{xx}\left( \phantom{\frac{0}{0}} f^2+hf(f_t+f_xf) +\cancel{O(h^2)} \right. \\ 
-        && \phantom{+\frac{h^2}{8}\{ \frac{0}{0} +f_{xx}0\frac{0}{0}} \left.\left.+ \cancel{\frac{h^2}{4}(f_t^2+2f_tf_xf+f_x^2f^2)} +O(h^2)+\cancel{O(h^4)} \phantom{\frac{0}{0}} \right) \right\} \\
+        && +f_{xx}\left. \left(f^2+hf(f_t+f_xf) +\cancel{O(h^2)}+ \cancel{\frac{h^2}{4}(f_t^2+2f_tf_xf+f_x^2f^2)} +O(h^2)+\cancel{O(h^4)} \right)  \right\} \\ 
         && +\frac{h^3}{48} \left\{ \phantom{\frac{0}{0}} f_{ttt}+3f_{ttx}f+O(h) + 3f_{txx}(f^2+O(h)+\cancel{O(h^2)}) \right. \\
         && \phantom{+\frac{h^3}{48}0\frac{0}{0}} \left. +f_{xxx} (f^3 + O(h) + \cancel{O(h^2)} + \cancel{O(h^3)}) \phantom{\frac{0}{0}} \right\} + O(h^4) \\
         &=& f + \frac{h}{2} \left( f_t + f_xf + \frac{h}{2}f_tf_x + \frac{h}{2}f_x^2f+\frac{h^2}{8}f_{tt}f_x+\frac{h^2}{4}f_{tx}f_xf+\frac{h^2}{8}f_{xx}f_xf^2+O(h^3) \right) \\
@@ -277,9 +281,30 @@
         && +\frac{h^2}{4}f_tf_x+\frac{h^2}{4}f_x^2f+\frac{h^3}{16}f_{tt}f_x+\frac{h^3}{8}f_{tx}f_xf+\frac{h^3}{16}f_{xx}f_xf^2+\cancel{O(h^4)} \\
         && +\frac{h^2}{8}( f_{tt} + 2f_{tx}f + f_{xx}f^2 ) \\
         && + \frac{h^3}{8}f_{tx}f_t+\frac{h^3}{8}f_{tx}f_xf + \frac{h^3}{8}f_{xx}f_tf+\frac{h^3}{8}f_{xx}f_xf^2 + \cancel{O(h^4)} \\
-        && + \frac{h^3}{48}( f_{ttt} + 3f_{ttx} + 3f_{txx}f^2 + f_{xxx}f^3 ) + \cancel{O(h^4)} + O(h^4) \\
+        && + \frac{h^3}{48}( f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 ) + \cancel{O(h^4)} + O(h^4) \\
         &=& f + \frac{h}{2}(f_t+f_xf) + \frac{h^2}{8}(f_{tt}+2f_{tx}f + f_{xx}f^2 + 2f_tf_x + 2f_x^2f) \\
-        && + \frac{h^3}{48} ( f_{tt} + 2f_{tx}f + f_{xx}f^2 +  )
+        && + \frac{h^3}{48} ( f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 + 3f_{tt}f_x + 6f_{tx}f_xf + 3f_{xx}f_xf^2\\
+        &&\phantom{+\frac{h^3}{48} (} + 6f_{tx}f_t + 6f_{tx}f_xf + 6f_{xx}f_tf+6f_{xx}f_xf^2 ) + O(h^4)
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+        k_3&=& f + \frac{h}{2}(f_t+f_xf) + \frac{h^2}{8}(f_{tt}+2f_{tx}f + f_{xx}f^2 + 2f_tf_x + 2f_x^2f) \\
+        && + \frac{h^3}{48} ( f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 + 3f_{tt}f_x + 12f_{tx}f_xf + 9f_{xx}f_xf^2\\
+        &&\phantom{+\frac{h^3}{48} (} + 6f_{tx}f_t + 6f_{xx}f_tf ) + O(h^4)
+        \end{eqnarray}
+        $$
+        <p>$k_4$ も同様、$k_3$ を何次までテイラー展開するかということに注意する。</p>
+        $$
+        \begin{eqnarray}
+        k_4 &=& f(t+h, x+hk_3) \\
+        &=& \sum_{i=0}^3\frac{1}{i!}\left( h\frac{\partial}{\partial t} + hk_3\frac{\partial}{\partial x} \right)^if+O(h^4) \\
+        &=& \sum_{i=0}^3\frac{1}{i!}h^i\left( \frac{\partial}{\partial t} + k_3\frac{\partial}{\partial x} \right)^if+O(h^4) \\
+        &=& f + h\left( \frac{\partial}{\partial t} + k_3\frac{\partial}{\partial x} \right)f + \frac{h^2}{2}\left( \frac{\partial^2}{\partial t^2}+2k_3\frac{\partial^2}{\partial t\partial x} + k_3^2\frac{\partial ^2}{\partial x^2} \right)f \\
+        && + \frac{h^3}{6}\left( \frac{\partial^3}{\partial t^3} + 3k_3\frac{\partial^3}{\partial t^2\partial x} + 3k_3^2\frac{\partial^3}{\partial t \partial x^2} + k_3^3\frac{\partial^3}{\partial x^3} \right)f+O(h^4) \\
+        &=& f + h(f_t+k_3f_x) + \frac{h^2}{2}(f_{tt} + 2k_3f_{tx} + k_3^2f_{xx}) \\
+        && + \frac{h^3}{6}(f_{ttt} + 3k_3f_{ttx} + 3k_3^2f_{txx} + k_3^3f_{xxx}) + O(h^4)
+
         \end{eqnarray}
         $$
       </section>
