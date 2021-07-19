@@ -266,16 +266,17 @@
         &=& f + \frac{h}{2} \left( f_t + f_xf + \frac{h}{2}f_tf_x + \frac{h}{2}f_x^2f+\frac{h^2}{8}f_{tt}f_x+\frac{h^2}{4}f_{tx}f_xf+\frac{h^2}{8}f_{xx}f_xf^2+O(h^3) \right) \\
         && +\frac{h^2}{8}\left\{ \phantom{\frac{0}{0}} f_{tt} + 2f_{tx}f + hf_{tx}f_t + hf_{tx}f_xf+O(h^2) \right. \\
         && \phantom{+\frac{h^2}{8}\{ \frac{0}{0}} +f_{xx}\left( \phantom{\frac{0}{0}} f^2+hf(f_t+f_xf) +\cancel{O(h^2)} \right. \\ 
-        && \phantom{+\frac{h^2}{8}\{ \frac{0}{0} +f_{xx}0\frac{0}{0}} \left.\left.+ \frac{h^2}{4}(f_t^2+2f_tf_xf+f_x^2f^2) +O(h^2)+\cancel{O(h^4)} \phantom{\frac{0}{0}} \right) \right\} \\
+        && \phantom{+\frac{h^2}{8}\{ \frac{0}{0} +f_{xx}0\frac{0}{0}} \left.\left.+ \cancel{\frac{h^2}{4}(f_t^2+2f_tf_xf+f_x^2f^2)} +O(h^2)+\cancel{O(h^4)} \phantom{\frac{0}{0}} \right) \right\} \\
         && +\frac{h^3}{48} \left\{ \phantom{\frac{0}{0}} f_{ttt}+3f_{ttx}f+O(h) + 3f_{txx}(f^2+O(h)+\cancel{O(h^2)}) \right. \\
         && \phantom{+\frac{h^3}{48}0\frac{0}{0}} \left. +f_{xxx} (f^3 + O(h) + \cancel{O(h^2)} + \cancel{O(h^3)}) \phantom{\frac{0}{0}} \right\} + O(h^4) \\
         &=& f + \frac{h}{2} \left( f_t + f_xf + \frac{h}{2}f_tf_x + \frac{h}{2}f_x^2f+\frac{h^2}{8}f_{tt}f_x+\frac{h^2}{4}f_{tx}f_xf+\frac{h^2}{8}f_{xx}f_xf^2+O(h^3) \right) \\
-        && +\frac{h^2}{8}\left\{ \phantom{\frac{0}{0}} f_{tt} + 2f_{tx}f + hf_{tx}f_t + hf_{tx}f_xf+O(h^2) \right. \\
-        && \phantom{+\frac{h^2}{8}\{ \frac{0}{0}} +\left.f_{xx}\left( f^2 + hf_tf + hf_xf^2+\frac{h^2}{4}f_t^2+\frac{h^2}{2}f_tf_xf+\frac{h^2}{4}f_x^2f^2+O(h^2) \right) \phantom{\frac{0}{0}} \right\} \\ 
-
-
-
-        &=& f + \frac{h}{2}(f_t+f_xf)+\frac{h^2}{4}f_tf_x+\frac{h^2}{4}f_x^2f+\frac{h^3}{16}f_{tt}f_x+\frac{h^3}{8}f_{tx}f_xf+\frac{h^3}{16}f_{xx}f_xf^2+O(h^4)
+        && +\frac{h^2}{8}\left( \phantom{\frac{0}{0}} f_{tt} + 2f_{tx}f + hf_{tx}f_t + hf_{tx}f_xf+\cancel{O(h^2)} \right. \\
+        && \phantom{+\frac{h^2}{8}\{ \frac{0}{0}} +\left. f_{xx}f^2 + hf_{xx}f_tf + hf_{xx}f_xf^2+O(h^2) \phantom{\frac{0}{0}} \right) \\ 
+        && +\frac{h^3}{48}\left( f_{ttt}+3f_{ttx}f+\cancel{O(h)}+3f_{txx}f^2+ \cancel{O(h)} + f_{xxx}f^3+O(h) \right)+O(h^4) \\
+        &=& f + \frac{h}{2}(f_t+f_xf) \\
+        && +\frac{h^2}{4}f_tf_x+\frac{h^2}{4}f_x^2f+\frac{h^3}{16}f_{tt}f_x+\frac{h^3}{8}f_{tx}f_xf+\frac{h^3}{16}f_{xx}f_xf^2+\cancel{O(h^4)} \\
+        && +\frac{h^2}{8}( f_{tt} + 2f_{tx} + f_{xx}f^2 ) \\
+        && + \frac{h^3}{8}f_{tx}f_t+\frac{h^3}{8}f_{tx}f_xf + \frac{h^3}{8}f_{xx}f_tf+\frac{h^3}{8}f_{xx}f_xf^2 + \cancel{O(h^4)} 
         \end{eqnarray}
         $$
       </section>
