@@ -398,21 +398,23 @@
         && +O(h^5)
         \end{eqnarray}
         $$
-        <p>次に $x(t+h)$ をテイラー展開して、ルンゲクッタ法の公式を展開した式と一致することを確かめる。</p>
+        <p>次に $x(t+h)$ をテイラー展開した式と、ルンゲクッタ法の公式を展開した式を、それぞれの項が全て一致することを確かめる。</p>
         $$
         \begin{eqnarray}
-        x(t+h)&=&\sum_{i=0}^4\frac{i!}{x^{(i)}(t)}h^i + O(h^5) \\
-        x(t+h)-x(t)&=&\sum_{i=1}^4\frac{i!}{x^{(i)}(t)}h^i + O(h^5) \\
+        x(t+h)&=&\sum_{i=0}^4\frac{x^{(i)}(t)}{i!}h^i + O(h^5) \\
+        x(t+h)-x(t)&=&\sum_{i=1}^4\frac{x^{(i)}(t)}{i!}h^i + O(h^5) \\
         &=& h\frac{dx}{dt}+\frac{h^2}{2}\frac{d^2x}{dt^2} + \frac{h^3}{6}\frac{d^3x}{dt^3} + \frac{h^4}{24}\frac{d^4x}{dt^4} + O(h^5) \\
         &=& hf + \frac{h^2}{2}\frac{df}{dt} + \frac{h^3}{6}\frac{d^2f}{dt^2} + \frac{h^4}{24}\frac{d^3f}{dt^3} + O(h^5)
         \end{eqnarray}
         $$
+        <p>上記の式より係数 $h$ の項は一致することが示された。</p>
         $$
         \begin{eqnarray}
         \frac{df}{dt} &=& \frac{\partial f}{\partial t}\frac{dt}{dt} + \frac{\partial f}{\partial x}\frac{dx}{dt} \\
         &=& f_t + f_xf
         \end{eqnarray}
         $$
+        <p>上記の式より係数 $\displaystyle \frac{h^2}{2}$ の項は一致することが示された。</p>
         $$
         \begin{eqnarray}
         \frac{d^2f}{dt^2} &=&  \frac{d}{dt}(f_t+f_xf) \\
@@ -421,12 +423,28 @@
         &=& f_{tt} + 2f_{tx}f + f_{xx}f^2 + f_tf_x + f_x^2f
         \end{eqnarray}
         $$
+        <p>上記の式より係数 $\displaystyle \frac{h^3}{6}$ の項は一致することが示された。</p>
         $$
         \begin{eqnarray}
         \frac{d^3f}{dt^3} &=& \frac{d}{dt}( f_{tt} + 2f_{tx}f + f_{xx}f^2 + f_tf_x + f_x^2f ) \\
-        
+        &=& \frac{df_{tt}}{dt} + 2\frac{df_{tx}}{dt}f+2f_{tx}\frac{df}{dt}+\frac{df_{xx}}{dt}f^2+2f_{xx}f\frac{df}{dt} \\
+        && + \frac{df_t}{dt}f_x + f_t\frac{df_x}{dt} + 2f_x\frac{df_x}{dt}f + f_x^2\frac{df}{dt} \\
+        &=& \frac{\partial f_{tt}}{dt}\frac{dt}{dt}+\frac{\partial f_{xx}}{\partial x}\frac{dx}{dt} \\
+        &&+2\left( \frac{\partial f_{tx}}{\partial t}\frac{dt}{dt}+\frac{\partial f_{tx}}{\partial x}\frac{dx}{dt} \right)f+2f_{tx}\left( \frac{\partial f}{\partial t}\frac{dt}{dt}+\frac{\partial f}{\partial x}\frac{dx}{dt} \right) \\
+        &&+\left( \frac{\partial f_{xx}}{\partial t}\frac{dt}{dt}+\frac{\partial f_{xx}}{\partial x}\frac{dx}{dt} \right)f^2+2f_{xx}f\left( \frac{\partial f}{\partial t}\frac{dt}{dt} + \frac{\partial f}{\partial x}\frac{dx}{dt} \right) \\
+        && +\left( \frac{\partial f_t}{\partial t}\frac{dt}{dt} + \frac{\partial f_t}{\partial x}\frac{dx}{dt}\right)f_x + f_t\left( \frac{\partial f_x}{\partial t}\frac{dt}{dt}+\frac{\partial f_x}{\partial x}\frac{dx}{dt} \right) \\
+        && +2f_x\left( \frac{\partial f_x}{\partial t}\frac{dt}{dt}+\frac{\partial f_x}{\partial x}\frac{dx}{dt} \right)f+f_x^2\left( \frac{\partial f}{\partial t}\frac{dt}{dt} + \frac{\partial f}{\partial x}\frac{dx}{dt} \right) \\
+        &=& f_{ttt} + f_{ttx}f \\
+        && + 2f_{ttx}f + 2f_{txx}f^2 + 2f_{tx}f_t + 2f_{tx}f_xf \\
+        && + f_{txx}f^2 + f_{xxx}f^3 + 2f_{xx}f_tf + 2f_{xx}f_xf^2 \\
+        && + f_{tt}f_x + f_{tx}f_xf + f_{tx}f_t + f_{xx}f_tf \\
+        && + 2f_{tx}f_xf + 2f_{xx}f_xf^2 + f_tf_x^2 + f_x^3f \\
+        &=& f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 \\
+        && + f_{tt}f_x + 5f_{tx}f_xf + 4f_{xx}f_xf^2 + 3f_{tx}f_t + 3f_{xx}f_tf + f_tf_x^2 + f_x^3f
         \end{eqnarray}
         $$
+        <p>上記の式より係数 $\displaystyle \frac{h^4}{24}$ の項は一致することが示された。</p>
+        <p>全ての項が一致するため、ルンゲクッタ法の1ステップの誤差は $O(h^5)$ であることが示された。</p>
       </section>
     </section>
     <script src="index.js"></script>
