@@ -9,10 +9,28 @@
   <body>
     <header><h1>常微分方程式の数値解法</h1></header>
     <h2>Butcher 配列</h2>
-    <section>
-      <h3>概要</h3>
-      <p><strong>Butcher 配列</strong>を使えば、Runge-Kutta法のそれぞれの係数が一目でわかる。</p>
-    </section>
+    <p><strong>Butcher 配列</strong>を使えば、Runge-Kutta法のそれぞれの係数が一目でわかる。</p>
+    <p>Runge-Kutta法が次のような式で与えられたとき:</p>
+    $$y_{n+1}=y_n+h\sum_{i=1}^sb_ik_i$$
+    $$k_i=f\left(t_n+c_ih,\,y_n+h\sum_{j=1}^{i-1}a_{ij}k_j\right)$$
+    <p>Butcher 配列は次のようになる。</p>
+    \begin{array}{c|cccc}
+    c_1 & a_{11} & a_{12} & \cdots & a_{1s} \\
+    c_2 & a_{21} & a_{22} & \cdots & a_{2s} \\
+    \vdots & \vdots & \vdots & \ddots & \vdots \\
+    c_s & a_{s1} & a_{a2} & \cdots & a_{ss} \\ \hline
+    & b_1 & b_2 & \cdots & b_s
+    \end{array}
+    <p>$4$ 次のRunge-Kutta法は次のように表すことができる。</p>
+    \begin{array}{c|cccc}
+    0 & 0 & 0 & 0 & 0 \\
+    1/2 & 1/2 & 0 & 0 & 0 \\
+    1/2 & 0 & 1/2 & 0 & 0 \\
+    1 & 0 & 0 & 1 & 0 \\ \hline
+    & 1/6 & 1/3 & 1/3 & 1/6
+    \end{array}
+    <h2>埋め込み型Runge-Kutta法</h2>
+    <p>Runge-Kutta法は局所誤差を精確に計算するのが難しい。誤差を精確に計算するために開発されたのが<strong>埋め込み型Runge-Kutta法</strong>である。</p>
     <script src="index.js"></script>
     <script>
     MathJax = {
