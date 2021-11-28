@@ -7,7 +7,12 @@
     <link rel="stylesheet" href="table.css">
   </head>
   <body>
-    <header><h1>小野研究室</h1></header>
+    <header><h1 style="font-size: 5em;">小野研究室</h1></header>
+    <div style="width:30%;padding-top:30%;position:relative; margin: auto;">
+      <div style="top:0;right:0;bottom:0;left:0;position:absolute;">
+        <iframe src="https://www.desmos.com/calculator/ehqpum537b?embed" width="100%" height="100%" frameborder=0></iframe>
+      </div>
+    </div>
     <h2>ヒューリスティックとは</h2>
     <p><strong>ヒューリスティック</strong>、または<strong>発見的手法</strong>とは、必ずしも正しい答えを導けるとは限らないが、ある程度のレベルで正解に近い解を得ることができる方法である。</p>
     <p><i>「ヒューリスティクス - Wikipedia」<a href="https://ja.wikipedia.org/wiki/%E3%83%92%E3%83%A5%E3%83%BC%E3%83%AA%E3%82%B9%E3%83%86%E3%82%A3%E3%82%AF%E3%82%B9">https://ja.wikipedia.org/wiki/ヒューリスティック</a></i></p>
@@ -559,6 +564,12 @@
           <code>print(f_max)</code><br>
           <code>print(x_max)</code><br>
         </div>
+      </section>
+      <h3>模擬焼きなまし法</h3>
+      <section>
+        <h4>アルゴリズム</h4>
+        <p>ランダム性を用いて局所最適解からの脱出を試みる手法である。</p>
+        <p>局所最適解から抜け出すために確率的に解の改悪を許す。</p>
       </section>
     </section>
     <script src="index.js"></script>
