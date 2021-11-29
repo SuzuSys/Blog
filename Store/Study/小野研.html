@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="table.css">
   </head>
-  <body>
+  <body style="margin: 0px 10px;">
     <div style="height: 100vh;">
       <div style="height: 13vh; margin-bottom: 8vh;">
         <header><h1 style="font-size: min(10vh, calc(100vw/6));">小野研究室</h1></header>
@@ -310,7 +310,7 @@
         </ul>
         <h4>グラフによる説明</h4>
         <p>$10$ 回の繰り返し数で得られた最大値は図の青い点である。</p>
-        <p class="center"><img src="png/desmos-graph-1.svg" width="400px"></p>
+        <p class="center"><img src="png/desmos-graph-1.svg" width="400px" style="width: 100%; max-width: 400px;"></p>
         <h4>C ソースコード</h4>
         <div class="code">
           <code>#include &lt;stdio.h&gt;</code><br>
@@ -414,7 +414,7 @@
         <p>近傍 $\lambda(\boldsymbol{x})$ を定め、その中でランダムな $x$ を生成する。ランダムに点を打つ範囲が小さくなるので精度が向上する。</p>
         <p>近傍は大抵「$x_0$ から距離 $\alpha$ 以内」と定義される。</p>
         <p class="center">
-          <img src="./png/Onosecond.drawio.svg" width="700px">
+          <img src="./png/Onosecond.drawio.svg" width="100%" style="width: 100%; max-width: 700px;">
         </p>
         <p>必要となるパラメータは次の $3$ つである。</p>
         <ul>
