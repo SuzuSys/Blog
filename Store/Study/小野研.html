@@ -314,6 +314,9 @@
           <code>#include &lt;stdlib.h&gt;</code><br>
           <code>#include &lt;float.h&gt;</code><br>
           <code>#include &lt;math.h&gt;</code><br><br>
+          <code>void plot(int count, double f, double x) {</code><br>
+          <code><span class="space">1</span>printf("%d,%f,%f\n", count, f, x);</code><br>
+          <code>}</code><br><br>
           <code>double func(double x) {</code><br>
           <code><span class="space">1</span>return sin(x) + 0.5*x; // 計算式記述</code><br>
           <code>}</code><br><br>
@@ -328,18 +331,18 @@
           <code><span class="space">1</span>// fの最大値とそのときのx</code><br>
           <code><span class="space">1</span>double f_max = DBL_MIN;</code><br>
           <code><span class="space">1</span>double x_max;</code><br><br>
-          <code><span class="space">1</span>// 一時的に格納する変数</code><br>
-          <code><span class="space">1</span>double f,x;</code><br><br>
           <code><span class="space">1</span>// M回試す</code><br>
           <code><span class="space">1</span>for (int i = 0; i &lt; M; ++i) {</code><br>
-          <code><span class="space">2</span>x = (double)rand()/RAND_MAX * (max-min) + min;</code><br>
-          <code><span class="space">2</span>f = func(x);</code><br>
+          <code><span class="space">2</span>double x = (double)rand()/RAND_MAX * (max-min) + min;</code><br>
+          <code><span class="space">2</span>double f = func(x);</code><br>
           <code><span class="space">2</span>if (f_max &lt; f) {</code><br>
           <code><span class="space">3</span>f_max = f;</code><br>
           <code><span class="space">3</span>x_max = x;</code><br>
           <code><span class="space">2</span>}</code><br>
+          <code><span class="space">2</span>plot(i, f_max, x_max);</code><br>
           <code><span class="space">1</span>}</code><br><br>
-          <code><span class="space">1</span>printf("%f\n", f_max);</code><br>
+          <code><span class="space">1</span>// 結果を出力</code><br>
+          <code><span class="space">1</span>printf("\n%f\n", f_max);</code><br>
           <code><span class="space">1</span>printf("%f\n", x_max);</code><br>
           <code>}</code>
         </div>
@@ -350,6 +353,9 @@
           <code>#include &lt;random&gt;</code><br>
           <code>#include &lt;cmath&gt;</code><br>
           <code>using namespace std;</code><br><br>
+          <code>void plot(int count, double f, double x) {</code><br>
+          <code><span class="space">1</span>cout &lt;&lt; count &lt;&lt; ',' &lt;&lt; f &lt;&lt; ',' &lt;&lt; x &lt;&lt; endl;</code><br>
+          <code>}</code><br><br>
           <code>double func(double x) {</code><br>
           <code><span class="space">1</span>return sin(x) + 0.5*x; // 計算式記述</code><br>
           <code>}</code><br><br>
@@ -365,44 +371,54 @@
           <code><span class="space">1</span>// fの最大値とそのときのx</code><br>
           <code><span class="space">1</span>double f_max = -numeric_limits&lt;double&gt;::infinity();</code><br>
           <code><span class="space">1</span>double x_max;</code><br><br>
-          <code><span class="space">1</span>// 一時的に格納する変数</code><br>
-          <code><span class="space">1</span>double f,x;</code><br><br>
           <code><span class="space">1</span>// M回試す</code><br>
           <code><span class="space">1</span>for (int i = 0; i &lt; M; ++i) {</code><br>
-          <code><span class="space">2</span>x = rand(mt);</code><br>
-          <code><span class="space">2</span>f = func(x);</code><br>
+          <code><span class="space">2</span>double x = rand(mt);</code><br>
+          <code><span class="space">2</span>double f = func(x);</code><br>
           <code><span class="space">2</span>if (f_max &lt; f) {</code><br>
           <code><span class="space">3</span>f_max = f;</code><br>
           <code><span class="space">3</span>x_max = x;</code><br>
           <code><span class="space">2</span>}</code><br>
+          <code><span class="space">2</span>plot(i, f_max, x_max);</code><br>
           <code><span class="space">1</span>}</code><br><br>
+          <code><span class="space">1</span>// 結果を出力</code><br>
           <code><span class="space">1</span>cout &lt;&lt; f_max &lt;&lt; endl;</code><br>
           <code><span class="space">1</span>cout &lt;&lt; x_max &lt;&lt; endl;</code><br>
           <code>}</code>
         </div>
         <h4>Python ソースコード</h4>
         <div class="code">
-          <code>import numpy as np</code><br><br>
+          <code>import numpy as np</code><br>
+          <code>from matplotlib import pyplot as plt</code><br><br>
+          <code>def plot(count, f, x):</code><br>
+          <code><span class="space">1</span>print(f'{count},{f},{x}')</code><br><br>
           <code>def func(x):</code><br>
           <code><span class="space">1</span>return np.sin(x) + 0.5*x # 計算式記述</code><br><br>
-          <code># 乱数を100個生成する</code><br>
-          <code>M = 100</code><br><br>
+          <code># 繰り返し数</code><br>
+          <code>M = 100 # 繰り返し数を指定</code><br><br>
           <code># xの制約条件</code><br>
-          <code>min = 0.0 # 最小値を記述</code><br>
-          <code>max = 16.0 # 最大値を記述</code><br><br>
-          <code>シード値を0に設定</code><br>
+          <code>min = 0.0 # 最小値を指定</code><br>
+          <code>max = 16.0 # 最大値を指定</code><br><br>
+          <code># fの最大値とそのときのx</code><br>
+          <code>f_max = -np.inf</code><br>
+          <code>x_max = None</code><br><br>
+          <code># f_maxの軌跡を格納した配列(0で初期化)</code><br>
+          <code>f_max_list = np.zeros(M)</code><br><br>
+          <code># シード値設定</code><br>
           <code>np.random.seed(0)</code><br><br>
-          <code># ランダムなxの配列を生成</code><br>
-          <code>xs = np.random.rand(M) * (max - min) + min</code><br>
-          <code># 関数値を一気に計算</code><br>
-          <code>fs = func(xs)</code><br><br>
-          <code># fsの中で最大の値が格納されているindexを取得</code><br>
-          <code>max_idx = np.argmax(fs)</code><br><br>
-          <code># fの最大値とそのときのxを取得</code><br>
-          <code>f_max = fs[max_idx]</code><br>
-          <code>x_max = xs[max_idx]</code><br><br>
+          <code># M回試す</code><br>
+          <code>for i in range(M):</code><br>
+          <code><span class="space">1</span>x = np.random.rand() * (max - min) + min</code><br>
+          <code><span class="space">1</span>f = func(x)</code><br>
+          <code><span class="space">1</span>if f_max &lt; f:</code><br>
+          <code><span class="space">2</span>f_max = f</code><br>
+          <code><span class="space">2</span>x_max = x</code><br>
+          <code><span class="space">1</span>f_max_list[i] = f_max</code><br>
+          <code><span class="space">1</span>plot(i, f_max, x_max)</code><br><br>
+          <code># 結果を出力</code><br>
           <code>print(f_max)</code><br>
-          <code>print(x_max)</code>
+          <code>print(x_max)</code><br>
+          <code>plt.plot(f_max_list)</code>
         </div>
       </section>
       <h3>局所探索法</h3>
@@ -424,6 +440,9 @@
           <code>#include &lt;stdlib.h&gt;</code><br>
           <code>#include &lt;float.h&gt;</code><br>
           <code>#include &lt;math.h&gt;</code><br><br>
+          <code>void plot(int count, double f, double x) {</code><br>
+          <code><span class="space">1</span>printf("%d,%f,%f\n", count, f, x);</code><br>
+          <code>}</code><br><br>
           <code>double func(double x) {</code><br>
           <code><span class="space">1</span>return sin(x) + 0.5*x; // 計算式記述</code><br>
           <code>}</code><br><br>
@@ -440,18 +459,19 @@
           <code><span class="space">1</span>// fの最大値とそのときのx</code><br>
           <code><span class="space">1</span>double f_max = DBL_MIN;</code><br>
           <code><span class="space">1</span>double x_max = (double)rand()/RAND_MAX * (max-min) + min;</code><br><br>
-          <code><span class="space">1</span>// 一時的に格納する変数</code><br>
-          <code><span class="space">1</span>double f,x;</code><br><br>
           <code><span class="space">1</span>// M回試す</code><br>
           <code><span class="space">1</span>for (int i = 0; i &lt; M; ++i) {</code><br>
-          <code><span class="space">2</span>x = ((double)rand()/RAND_MAX - 0.5) * 2*dist + x_max;</code><br>
-          <code><span class="space">2</span>if (x &lt; min || max &lt; x) continue;</code><br>
-          <code><span class="space">2</span>f = func(x);</code><br>
-          <code><span class="space">2</span>if (f_max &lt; f) {</code><br>
-          <code><span class="space">3</span>f_max = f;</code><br>
-          <code><span class="space">3</span>x_max = x;</code><br>
+          <code><span class="space">2</span>double x = ((double)rand()/RAND_MAX - 0.5) * 2*dist + x_max;</code><br>
+          <code><span class="space">2</span>if (min &lt; x && x &lt; max) {</code><br>
+          <code><span class="space">3</span>double f = func(x);</code><br>
+          <code><span class="space">3</span>if (f_max &lt; f) {</code><br>
+          <code><span class="space">4</span>f_max = f;</code><br>
+          <code><span class="space">4</span>x_max = x;</code><br>
+          <code><span class="space">3</span>}</code><br>
           <code><span class="space">2</span>}</code><br>
+          <code><span class="space">2</span>plot(i, f_max, x_max);</code><br>
           <code><span class="space">1</span>}</code><br><br>
+          <code><span class="space">1</span>// 結果を出力</code><br>
           <code><span class="space">1</span>printf("%f\n", f_max);</code><br>
           <code><span class="space">1</span>printf("%f\n", x_max);</code><br>
           <code>}</code>
@@ -463,6 +483,9 @@
           <code>#include &lt;random&gt;</code><br>
           <code>#include &lt;cmath&gt;</code><br>
           <code>using namespace std;</code><br><br>
+          <code>void plot(int count, double f, double x) {</code><br>
+          <code><span class="space">1</span>cout &lt;&lt; count &lt;&lt; ',' &lt;&lt; f &lt;&lt; ',' &lt;&lt; x &lt;&lt; endl;</code><br>
+          <code>}</code><br><br>
           <code>double func(double x) {</code><br>
           <code><span class="space">1</span>return sin(x) + 0.5*x; // 計算式記述</code><br>
           <code>}</code><br><br>
@@ -481,18 +504,19 @@
           <code><span class="space">1</span>// fの最大値とそのときのx</code><br>
           <code><span class="space">1</span>double f_max = -numeric_limits&lt;double&gt;::infinity();</code><br>
           <code><span class="space">1</span>double x_max = rand_zero(mt);</code><br><br>
-          <code><span class="space">1</span>// 一時的に格納する変数</code><br>
-          <code><span class="space">1</span>double f,x;</code><br><br>
           <code><span class="space">1</span>// M回試す</code><br>
           <code><span class="space">1</span>for (int i = 0; i &lt; M; ++i) {</code><br>
-          <code><span class="space">2</span>x = rand(mt) + x_max;</code><br>
-          <code><span class="space">2</span>if (x &lt; min || max &lt; x) continue;</code><br>
-          <code><span class="space">2</span>f = func(x);</code><br>
-          <code><span class="space">2</span>if (f_max &lt; f) {</code><br>
-          <code><span class="space">3</span>f_max = f;</code><br>
-          <code><span class="space">3</span>x_max = x;</code><br>
+          <code><span class="space">2</span>double x = rand(mt) + x_max;</code><br>
+          <code><span class="space">2</span>if (min &lt; x && x &lt; max) {</code><br>
+          <code><span class="space">3</span>double f = func(x);</code><br>
+          <code><span class="space">3</span>if (f_max &lt; f) {</code><br>
+          <code><span class="space">4</span>f_max = f;</code><br>
+          <code><span class="space">4</span>x_max = x;</code><br>
+          <code><span class="space">3</span>}</code><br>
           <code><span class="space">2</span>}</code><br>
+          <code><span class="space">2</span>plot(i, f_max, x_max);</code><br>
           <code><span class="space">1</span>}</code><br><br>
+          <code><span class="space">1</span>// 結果を出力</code><br>
           <code><span class="space">1</span>cout &lt;&lt; f_max &lt;&lt; endl;</code><br>
           <code><span class="space">1</span>cout &lt;&lt; x_max &lt;&lt; endl;</code><br>
           <code>}</code>
@@ -534,6 +558,10 @@
         <p>ランダム性を用いて局所最適解からの脱出を試みる手法である。</p>
         <p>局所最適解から抜け出すために確率的に解の改悪を許す。</p>
         <p class="center"><img src="./png/模擬焼きなまし法.png" style="width: 100%; max-width: 700px;"></p>
+        <h4>C ソースコード</h4>
+        <div class="code">
+          <code></code>
+        </div>
       </section>
     </section>
     <script src="index.js"></script>
