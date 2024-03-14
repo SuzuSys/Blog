@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>小野研究室</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="table.css">
+  </head>
+  <body style="margin: 0px 10px;">
+    <div style="height: 100vh;">
+      <div style="height: 13vh; margin-bottom: 8vh;">
+        <header><h1 style="font-size: min(10vh, calc(100vw/6));">小野研究室</h1></header>
+      </div>
+      <div style="width: 70vh; height: 70vh; max-width: 90%; margin: auto; position: relative;">
+        <div style="top:0;right:0;bottom:0;left:0;position:absolute;">
+          <iframe src="https://www.desmos.com/calculator/ehqpum537b?embed" width="100%" height="100%" frameborder=0></iframe>
+        </div>
+      </div>
+    </div>
+    <h2>ヒューリスティックとは</h2>
+    <p><strong>ヒューリスティック</strong>、または<strong>発見的手法</strong>とは、必ずしも正しい答えを導けるとは限らないが、ある程度のレベルで正解に近い解を得ることができる方法である。</p>
+    <p><i>「ヒューリスティクス - Wikipedia」<a href="https://ja.wikipedia.org/wiki/%E3%83%92%E3%83%A5%E3%83%BC%E3%83%AA%E3%82%B9%E3%83%86%E3%82%A3%E3%82%AF%E3%82%B9">https://ja.wikipedia.org/wiki/ヒューリスティック</a></i></p>
+    <h2>メタヒューリスティックとは</h2>
+    <p><strong>メタヒューリスティック</strong>とは、組合せ最適化問題のアルゴリズムにおいて、特定の計算問題に依存しないヒューリスティクスのことである。</p>
+    <p>Wikipedia の概要を引用：</p>
+    <blockquote>
+      <p>通常ある問題に対しての「解法」が存在するとき、その解法が適用できる範囲はその問題に対してのみである。</p>
+      <p>ところが近似アルゴリズムのように厳密な答えではなく、なるべく「答えに近い」まで拡大すると、局所探索法や貪欲法など複数の問題に対しても使用できる手法が存在する。</p>
+      <p>メタヒューリスティクスとは特定の問題に限定されず、どのような問題に対しても汎用的に対応できるように設計された、アルゴリズムの基本的な枠組みのことである。</p>
+      <p>言い換えればヒューリスティックアルゴリズムの内、特定の問題に依存せず手法のみが独立したものである。それゆえあらゆる問題に適用可能である。</p>
+      <p>このことはNP困難のような多項式時間で最適解を求めるアルゴリズムが存在しないと思われる問題などに対して有効である。</p>
+      <p>ただし、一般的にメタヒューリスティクスは特定の問題専用のヒューリスティクスより平均的な解の精度が劣ることが多い。これは汎用的な探索をするためには問題に対する事前知識を必要とせずに実装しなければならないので、それらを有効に使用することで解の探索を行う方法に対してどうしても不利な立場で探索を進める必要があるからである。</p>
+    </blockquote>
+    <p><i>「メタヒューリスティック - Wikipedia」<a href="https://ja.wikipedia.org/wiki/%E3%83%A1%E3%82%BF%E3%83%92%E3%83%A5%E3%83%BC%E3%83%AA%E3%82%B9%E3%83%86%E3%82%A3%E3%82%AF%E3%82%B9">https://ja.wikipedia.org/wiki/メタヒューリスティック</a></i></p>
+    <h2>問題の形式</h2>
+    <p>プレ卒研では次のような問題に対して効率的に近似解を解くアルゴリズムを学ぶ。</p>
+    <ul>
+      <li>関数 $f(\boldsymbol{x})$ で最大値/最小値となる $\boldsymbol{x}$ を探す。</li>
+      <li>制約条件 $g(\boldsymbol{x})$ がある。</li>
+    </ul>
+    <h2>言語別知っておくこと</h2>
+    <section>
+      <h3>C言語</h3>
+      <section>
+        <h4>標準出力</h4>
+        <p><code>#include &lt;stdio.h&gt;</code></p>
+        <p><code>printf()</code></p>
+        <table class="left" style="margin-left: 0;">
+          <tr><th>変換指定子</th><th>説明</th><th>出力例</th></tr>
+          <tr><td><code>%d</code></td><td>整数</td><td><code>123</code></td></tr>
+          <tr><td><code>%f</code></td><td>小数</td><td><code>123.456000</code></td></tr>
+          <tr><td><code>%e</code></td><td>指数表現</td><td><code>1.234560e+002</code></td></tr>
+          <tr><td><code>%g</code></td><td>指数部<code>-4</code>以上: <code>%f</code><br>指数部<code>-5</code>以下: <code>%e</code></td><td><code>0.000345</code><br><code>3.45e-005</code></td></tr>
+        </table>
+        <br>
+        <table class="left" style="margin-left: 0;">
+          <tr><th>記述</th><th>説明</th><th>出力結果</th></tr>
+          <tr><td><code>printf("[%8d]\n", 123);</code></td><td><code>8</code>文字幅</td><td><code>[&emsp;&emsp;&emsp;&emsp;&emsp;123]</code></td></tr>
+          <tr><td><code>printf("[%08d]\n", 123);</code></td><td><code>8</code>文字幅(<code>0</code>埋め)</td><td><code>[00000123]</code></td></tr>
+          <tr><td><code>printf("[%12f]\n", 12.34567);</code></td><td><code>12</code>文字幅</td><td><code>[&emsp;&emsp;&emsp;12.345670]</code></td></tr>
+          <tr><td><code>printf("[%12.2f]\n", 12.34567);</code></td><td>小数点以下<code>2</code>桁(四捨五入)</td><td><code>[&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;12.35]</code></td></tr>
+          <tr><td><code>printf("%+d\n", 123);</code></td><td><code>+</code>も表示</td><td><code>+123</code></td></tr>
+        </table>
+        <h4>疑似乱数</h4>
+        <p><code>#include &lt;stdlib.h&gt;</code></p>
+        <p><code>srand(), rand(), RAND_MAX</code></p>
+        <div class="code">
+          <code>#include &lt;stdlib.h&gt;</code><br><br>
+          <code>int main(void) {</code><br>
+          <code><span class="space">1</span>// 疑似乱数のシード値を設定する</code><br>
+          <code><span class="space">1</span>srand(0); // 引数はint型</code><br><br>
+          <code><span class="space">1</span>// 0からRAND_MAXまでの整数の疑似乱数を返す</code><br>
+          <code><span class="space">1</span>int x = rand();</code><br><br>
+          <code><span class="space">1</span>// 0からn-1までの整数の疑似乱数を返す</code><br>
+          <code><span class="space">1</span>int x = rand() % n;</code><br><br>
+          <code><span class="space">1</span>// 0から1までの倍精度浮動小数点数を返す</code><br>
+          <code><span class="space">1</span>double x = (double)rand()/RAND_MAX;</code><br><br>
+          <code><span class="space">1</span>// minからmaxまでの倍精度浮動小数点数を返す</code><br>
+          <code><span class="space">1</span>double x = (double)rand()/RAND_MAX * (max-min) + min;</code><br>
+          <code>}</code>
+        </div>
+        <p>備考: 「計算研究会 - C言語のrand関数について」<a href="https://www.calc.mie.jp/posts/2017-05-26-c-prog-rand.html">https://www.calc.mie.jp/posts/2017-05-26-c-prog-rand.html</a></p>
+        <h4>最大値、最小値</h4>
+        <p><code>#include &lt;limits.h&gt;</code></p>
+        <p><code>INT_MIN, INT_MAX</code></p>
+        <table class="left" style="margin-left: 0;">
+          <tr><th>定数</th><th>説明</th></tr>
+          <tr><td><code>INT_MIN</code></td><td><code>int</code>型の最小値</td></tr>
+          <tr><td><code>INT_MAX</code></td><td><code>int</code>型の最大値</td></tr>
+        </table>
+        <br>
+        <p><code>#include &lt;float.h&gt;</code></p>
+        <p><code>DBL_MIN, DBL_MAX</code></p>
+        <table class="left" style="margin-left: 0;">
+          <tr><td><code>DBL_MIN</code></td><td><code>double</code>型の最小値</td></tr>
+          <tr><td><code>DBL_MAX</code></td><td><code>double</code>型の最大値</td></tr>
+        </table>
+        <h4>数学関数</h4>
+        <p><code>#include &lt;math.h&gt;</code></p>
+        <p><code>acos(), asin(), atan(), atan2(), cos(), sin(), tan(), exp(), exp2(), log(), log10(), fabs(), hypot(), pow(), sqrt()</code></p>
+        <table class="left" style="margin-left: 0;">
+          <tr><th>I/F</th><th>説明</th></tr>
+          <tr><td><code>double acos(double x);</code></td><td>$\cos^{-1}x$</td></tr>
+          <tr><td><code>double asin(double x);</code></td><td>$\sin^{-1}x$</td></tr>
+          <tr><td><code>double atan(double x);</code></td><td>$\tan^{-1}x$</td></tr>
+          <tr><td><code>double atan2(double y, double x);</code></td><td>$\mathrm{atan}2(y,x)$</td></tr>
+          <tr><td><code>double cos(double x);</code></td><td>$\cos x$</td></tr>
+          <tr><td><code>double sin(double x);</code></td><td>$\sin x$</td></tr>
+          <tr><td><code>double tan(double x);</code></td><td>$\tan x$</td></tr>
+          <tr><td><code>double exp(double x);</code></td><td>$e^x$</td></tr>
+          <tr><td><code>double exp2(double x);</code></td><td>$2^x$</td></tr>
+          <tr><td><code>double log(double x);</code></td><td>$\log_ex$</td></tr>
+          <tr><td><code>double log10(double x);</code></td><td>$\log_{10}x$</td></tr>
+          <tr><td><code>double fabs(double x);</code></td><td>$|x|$</td></tr>
+          <tr><td><code>double hypot(double x, double y);</code></td><td>$\sqrt{x^2+y^2}$</td></tr>
+          <tr><td><code>double pow(double x, double y);</code></td><td>$x^y$</td></tr>
+          <tr><td><code>double sqrt(double x);</code></td><td>$\sqrt{x}$</td></tr>
+          <tr><td><code>double cbrt(double x);</code></td><td>$\sqrt[3]{x}$</td></tr>
+          <tr><td><code>double fmax(double x, double y);</code></td><td>$\max(x,y)$</td></tr>
+          <tr><td><code>double fmin(double x, double y);</code></td><td>$\min(x,y)$</td></tr>
+        </table>
+        <h4>数学定数</h4>
+        <p><code>#include &lt;math.h&gt;</code></p>
+        <p><code>M_E, M_PI, M_PI_2, M_PI_4, M_1_PI, M_2_PI, M_SQRT2, M_SQRT1_2</code></p>
+        <table class="left" style="margin-left: 0;">
+          <tr><th>記述</th><th>説明</th></tr>
+          <tr><td><code>M_E</code></td><td>$e$</td></tr>
+          <tr><td><code>M_PI</code></td><td>$\pi$</td></tr>
+          <tr><td><code>M_PI_2</code></td><td>$\pi/2$</td></tr>
+          <tr><td><code>M_PI_4</code></td><td>$\pi/4$</td></tr>
+          <tr><td><code>M_1_PI</code></td><td>$1/\pi$</td></tr>
+          <tr><td><code>M_2_PI</code></td><td>$2/\pi$</td></tr>
+          <tr><td><code>M_SQRT2</code></td><td>$\sqrt{2}$</td></tr>
+          <tr><td><code>M_SQRT1_2</code></td><td>$1/\sqrt{2}$</td></tr>
+        </table>
+      </section>
+      <h3>C++</h3>
+      <section>
+        <h4>標準出力</h4>
+        <p><code>#include &lt;iostream&gt;</code></p>
+        <p><code>cout, endl;</code></p>
+        <div class="code">
+          <code>#include &lt;iostream&gt;</code><br>
+          <code>using namespace std;</code><br><br>
+          <code>int main() {</code><br>
+          <code><span class="space">1</span>// 普通に出力</code><br>
+          <code><span class="space">1</span>cout &lt;&lt; 123.456 &lt;&lt; endl;</code><br>
+          <code><span class="space">1</span>cout &lt;&lt; "f(x)=" &lt;&lt; 123.456 &lt;&lt; endl;</code><br>
+          <code>}</code>
+        </div>
+        <div class="code out">
+          <code>123.456</code><br>
+          <code>f(x)=123.456</code>
+        </div>
+        <p><code>#include &lt;iomanip&gt;</code></p>
+        <p><code>setprecision(), setw(), setfill()</code></p>
+        <div class="code">
+          <code>#include &lt;iostream&gt;</code><br>
+          <code>#include &lt;iomanip&gt;</code><br>
+          <code>using namespace std;</code><br><br>
+          <code>int main() {</code><br>
+          <code><span class="space">1</span>// 小数点以下2桁で出力(四捨五入もする)</code><br>
+          <code><span class="space">1</span>cout &lt;&lt; setprecision(-2) &lt;&lt; 123.456 &lt;&lt; endl;</code><br><br>
+          <code><span class="space">1</span>// 幅5で出力</code><br>
+          <code><span class="space">1</span>cout &lt;&lt; setw(5) &lt;&lt; 1.23 &lt;&lt; endl;</code><br><br>
+          <code><span class="space">1</span>// 余白を0で埋める</code><br>
+          <code><span class="space">1</span>cout &lt;&lt; setw(5) &lt;&lt; setfill('0') &lt;&lt; 1.23 &lt;&lt; endl;</code><br>
+          <code>}</code>
+        </div>
+        <div class="code out">
+          <code>123.46</code><br>
+          <code> 1.23</code><br>
+          <code>01.23</code>
+        </div>
+        <h4>疑似乱数</h4>
+        <p>C言語の<code>rand()</code>は線形合同法は周期が短いため、メルセンヌ・ツイスタを使う。メルセンヌ・ツイスタは高品質の疑似乱数列を高速に生成できる。</p>
+        <p><code>#include &lt;random&gt;</code></p>
+        <p><code>mt19937_64, uniform_real_distribution</code></p>
+        <div class="code">
+          <code>#include &lt;random&gt;</code><br>
+          <code>#using namespace std;</code><br><br>
+          <code>int main() {</code><br>
+          <code><span class="space">1</span>// シード値0のメルセンヌ・ツイスタ疑似乱数を生成</code><br>
+          <code><span class="space">1</span>mt19937_64 mt(0);</code><br><br>
+          <code><span class="space">1</span>// minからmaxまでの一様分布生成器</code><br>
+          <code><span class="space">1</span>uniform_real_distribution&lt;&gt; dist(min, max);</code><br><br>
+          <code><span class="space">1</span>// 乱数をxに代入</code><br>
+          <code><span class="space">1</span>double x = dist(mt);</code><br>
+          <code>}</code>
+        </div>
+        <h4>最大値、最小値</h4>
+        <p><code>#include &lt;limits&gt;</code></p>
+        <p><code>numeric_limits, infinity()</code></p>
+        <table class="left" style="margin-left: 0;">
+          <tr><th>記述</th><th>説明</th></tr>
+          <tr><td><code>numeric_limits&lt;double&gt;::infinity()</code></td><td>$\infty$</td></tr>
+          <tr><td><code>-numeric_limits&lt;double&gt;::infinity()</code></td><td>$-\infty$</td></tr>
+        </table>
+        <h4>数学関数</h4>
+        <p><code>#include &lt;cmath&gt;</code></p>
+        <p><code>acos(), asin(), atan(), atan2(), cos(), sin(), tan(), exp(), exp2(), log(), log10(), abs(), hypot(), pow(), sqrt()</code></p>
+        <table class="left" style="margin-left: 0;">
+          <tr><th>I/F</th><th>説明</th></tr>
+          <tr><td><code>acos(x)</code></td><td>$\cos^{-1}x$</td></tr>
+          <tr><td><code>asin(x)</code></td><td>$\sin^{-1}x$</td></tr>
+          <tr><td><code>atan(x)</code></td><td>$\tan^{-1}x$</td></tr>
+          <tr><td><code>atan(y,x)</code></td><td>$\mathrm{atan}2(y,x)$</td></tr>
+          <tr><td><code>cos(x)</code></td><td>$\cos x$</td></tr>
+          <tr><td><code>sin(x)</code></td><td>$\sin x$</td></tr>
+          <tr><td><code>tan(x)</code></td><td>$\tan x$</td></tr>
+          <tr><td><code>exp(x)</code></td><td>$e^x$</td></tr>
+          <tr><td><code>exp2(x)</code></td><td>$2^x$</td></tr>
+          <tr><td><code>log(x)</code></td><td>$\log_ex$</td></tr>
+          <tr><td><code>log10(x)</code></td><td>$\log_{10}x$</td></tr>
+          <tr><td><code>abs(x)</code></td><td>$|x|$</td></tr>
+          <tr><td><code>hypot(x,y)</code></td><td>$\sqrt{x^2+y^2}$</td></tr>
+          <tr><td><code>pow(x,y)</code></td><td>$x^y$</td></tr>
+          <tr><td><code>sqrt(x)</code></td><td>$\sqrt{x}$</td></tr>
+          <tr><td><code>cbrt(x)</code></td><td>$\sqrt[3]{x}$</td></tr>
+          <tr><td><code>fmax(x,y)</code></td><td>$\max(x,y)$</td></tr>
+          <tr><td><code>fmin(x,y)</code></td><td>$\min(x,y)$</td></tr>
+        </table>
+        <h4>数学定数</h4>
+        <p><code>#include &lt;cmath&gt;</code></p>
+        <p><code>M_E, M_PI, M_PI_2, M_PI_4, M_1_PI, M_2_PI, M_SQRT2, M_SQRT1_2</code></p>
+        <table class="left" style="margin-left: 0;">
+          <tr><th>記述</th><th>説明</th></tr>
+          <tr><td><code>M_E</code></td><td>$e$</td></tr>
+          <tr><td><code>M_PI</code></td><td>$\pi$</td></tr>
+          <tr><td><code>M_PI_2</code></td><td>$\pi/2$</td></tr>
+          <tr><td><code>M_PI_4</code></td><td>$\pi/4$</td></tr>
+          <tr><td><code>M_1_PI</code></td><td>$1/\pi$</td></tr>
+          <tr><td><code>M_2_PI</code></td><td>$2/\pi$</td></tr>
+          <tr><td><code>M_SQRT2</code></td><td>$\sqrt{2}$</td></tr>
+          <tr><td><code>M_SQRT1_2</code></td><td>$1/\sqrt{2}$</td></tr>
+        </table>
+      </section>
+      <h3>Python</h3>
+      <section>
+        <h4>疑似乱数</h4>
+        <p><code>import numpy as np</code></p>
+        <p><code>np.random.seed(), np.random.rand()</code></p>
+        <div class="code">
+          <code>#import numpuy as np</code><br><br>
+          <code># シード値を0に設定</code><br>
+          <code>np.random.seed(0)</code><br><br>
+          <code>// 0以上1未満の一様分布の乱数を100個生成</code><br>
+          <code>arr = np.random.rand(100)</code><br>
+          <code>// min以上max未満の一様分布の乱数を100個生成</code><br>
+          <code>arr = np.random.rand(100) * (max-min) + min</code>
+        </div>
+        <h4>最大値、最小値</h4>
+        <p><code>import numpy as np</code></p>
+        <p><code>np.inf</code></p>
+        <table class="left" style="margin-left: 0;">
+          <tr><th>記述</th><th>説明</th></tr>
+          <tr><td><code>np.inf</code></td><td>$\infty$</td></tr>
+          <tr><td><code>-np.inf</code></td><td>$-\infty$</td></tr>
+        </table>
+        <h4>数学関数</h4>
+        <p><code>np.ndarray</code>に対して使えるものを抜粋。</p>
+        <p><code>import numpy as np</code></p>
+        <p><code>np.arccos(), np.arcsin(), np.arctan(), np.arctan2(), np.cos(), np.sin(), np.tan(), np.exp(), np.exp2(), np.log(), np.log10(), np.abs(), np.sqrt(), np.hypot(), np.ndarray.max(), np.argmax(x), np.ndarray.min(), np.argmin(x)</code></p>
+        <table class="left" style="margin-left: 0;">
+          <tr><th>I/F</th><th>説明</th></tr>
+          <tr><td><code>np.arccos(x)</code></td><td>$\cos^{-1}x$</td></tr>
+          <tr><td><code>np.arcsin(x)</code></td><td>$\sin^{-1}x$</td></tr>
+          <tr><td><code>np.arctan(x)</code></td><td>$\tan^{-1}x$</td></tr>
+          <tr><td><code>np.arctan2(y,x)</code></td><td>$\mathrm{atan}2(y,x)$</td></tr>
+          <tr><td><code>np.cos(x)</code></td><td>$\cos x$</td></tr>
+          <tr><td><code>np.sin(x)</code></td><td>$\sin x$</td></tr>
+          <tr><td><code>np.tan(x)</code></td><td>$\tan x$</td></tr>
+          <tr><td><code>np.exp(x)</code></td><td>$e^x$</td></tr>
+          <tr><td><code>np.exp2(x)</code></td><td>$2^x$</td></tr>
+          <tr><td><code>np.log(x)</code></td><td>$\log_ex$</td></tr>
+          <tr><td><code>np.log10(x)</code></td><td>$\log_{10}x$</td></tr>
+          <tr><td><code>np.abs(x)</code></td><td>$|x|$</td></tr>
+          <tr><td><code>np.hypot(x,y)</code></td><td>$\sqrt{x^2+y^2}$</td></tr>
+          <tr><td><code>np.sqrt(x)</code></td><td>$\sqrt{x}$</td></tr>
+          <tr><td><code>np.ndarray.max()</code></td><td>$\max(a_0,\cdots)$</td></tr>
+          <tr><td><code>np.argmax(x)</code></td><td>最大値の<code>index</code></td></tr>
+          <tr><td><code>np.ndarray.min()</code></td><td>$\min(a_0,\cdots)$</td></tr>
+          <tr><td><code>np.argmin(x)</code></td><td>最小値の<code>index</code></td></tr>
+        </table>
+        <h4>数学定数</h4>
+        <p><code>import numpy as np</code></p>
+        <p><code>np.e, np.pi</code></p>
+        <table class="left" style="margin-left: 0;">
+          <tr><th>記述</th><th>説明</th></tr>
+          <tr><td><code>np.e</code></td><td>$e$</td></tr>
+          <tr><td><code>np.pi</code></td><td>$\pi$</td></tr>
+        </table>
+      </section>
+    </section>
+    <h2>アルゴリズム</h2>
+    <p>まず問題設定が必要である。</p>
+    <ul>
+      <li>関数 $f(\boldsymbol{x})$ 例: $f(x)=\sin x + 0.5x$</li>
+      <li>制約条件 $g(\boldsymbol{x})$ 例: $g(x): 0\le x \le 16$</li>
+    </ul>
+    <section>
+      <h3>ただただ探す</h3>
+      <section>
+        <h4>アルゴリズム</h4>
+        <p>ランダムに $\boldsymbol{x}$ を生成し、$f(\boldsymbol{x})$ を計算する。一番最大/最小のものが選ばれる。<br>下のフローチャートは最大の $f(x)$ を探すアルゴリズムを表している。</p>
+        <p class="center"><img src="png/Ono1.drawio.svg" width="500px"></p>
+        <p>必要となるパラメータは次の $1$ つである。</p>
+        <ul>
+          <li>終了条件（繰り返し数 $M$）</li>
+        </ul>
+        <h4>C ソースコード</h4>
+        <div class="code">
+          <code>#include &lt;stdio.h&gt;</code><br>
+          <code>#include &lt;stdlib.h&gt;</code><br>
+          <code>#include &lt;float.h&gt;</code><br>
+          <code>#include &lt;math.h&gt;</code><br><br>
+          <code>void plot(int count, double f, double x) {</code><br>
+          <code><span class="space">1</span>printf("%d,%f,%f\n", count, f, x);</code><br>
+          <code>}</code><br><br>
+          <code>double func(double x) {</code><br>
+          <code><span class="space">1</span>return sin(x) + 0.5*x; // 計算式記述</code><br>
+          <code>}</code><br><br>
+          <code>int main(void) {</code><br>
+          <code><span class="space">1</span>// 繰り返し数</code><br>
+          <code><span class="space">1</span>const int M = 100; // 繰り返し数を指定</code><br><br>
+          <code><span class="space">1</span>// xの制約条件</code><br>
+          <code><span class="space">1</span>const double min = 0.0; // 最大値を指定</code><br>
+          <code><span class="space">1</span>const double max = 16.0; // 最小値を指定</code><br><br>
+          <code><span class="space">1</span>// シード値を0に設定</code><br>
+          <code><span class="space">1</span>srand(0);</code><br><br>
+          <code><span class="space">1</span>// fの最大値とそのときのx</code><br>
+          <code><span class="space">1</span>double f_max = DBL_MIN;</code><br>
+          <code><span class="space">1</span>double x_max;</code><br><br>
+          <code><span class="space">1</span>// M回試す</code><br>
+          <code><span class="space">1</span>for (int i = 0; i &lt; M; ++i) {</code><br>
+          <code><span class="space">2</span>double x = (double)rand()/RAND_MAX * (max-min) + min;</code><br>
+          <code><span class="space">2</span>double f = func(x);</code><br>
+          <code><span class="space">2</span>if (f_max &lt; f) {</code><br>
+          <code><span class="space">3</span>f_max = f;</code><br>
+          <code><span class="space">3</span>x_max = x;</code><br>
+          <code><span class="space">2</span>}</code><br>
+          <code><span class="space">2</span>plot(i, f_max, x_max);</code><br>
+          <code><span class="space">1</span>}</code><br><br>
+          <code><span class="space">1</span>// 結果を出力</code><br>
+          <code><span class="space">1</span>printf("\n%f\n", f_max);</code><br>
+          <code><span class="space">1</span>printf("%f\n", x_max);</code><br>
+          <code>}</code>
+        </div>
+        <h4>C++ ソースコード</h4>
+        <div class="code">
+          <code>#include &lt;iostream&gt;</code><br>
+          <code>#include &lt;limits&gt;</code><br>
+          <code>#include &lt;random&gt;</code><br>
+          <code>#include &lt;cmath&gt;</code><br>
+          <code>using namespace std;</code><br><br>
+          <code>void plot(int count, double f, double x) {</code><br>
+          <code><span class="space">1</span>cout &lt;&lt; count &lt;&lt; ',' &lt;&lt; f &lt;&lt; ',' &lt;&lt; x &lt;&lt; endl;</code><br>
+          <code>}</code><br><br>
+          <code>double func(double x) {</code><br>
+          <code><span class="space">1</span>return sin(x) + 0.5*x; // 計算式記述</code><br>
+          <code>}</code><br><br>
+          <code>int main(void) {</code><br>
+          <code><span class="space">1</span>// 繰り返し数</code><br>
+          <code><span class="space">1</span>const int M = 100; // 繰り返し数を指定</code><br><br>
+          <code><span class="space">1</span>// xの制約条件</code><br>
+          <code><span class="space">1</span>const double min = 0.0; // 最大値を指定</code><br>
+          <code><span class="space">1</span>const double max = 16.0; // 最小値を指定</code><br><br>
+          <code><span class="space">1</span>// シード値0の疑似乱数生成器を宣言</code><br>
+          <code><span class="space">1</span>mt19937_64 mt(0);</code><br>
+          <code><span class="space">1</span>uniform_real_distribution&lt;&gt; rand(min, max);</code><br><br>
+          <code><span class="space">1</span>// fの最大値とそのときのx</code><br>
+          <code><span class="space">1</span>double f_max = -numeric_limits&lt;double&gt;::infinity();</code><br>
+          <code><span class="space">1</span>double x_max;</code><br><br>
+          <code><span class="space">1</span>// M回試す</code><br>
+          <code><span class="space">1</span>for (int i = 0; i &lt; M; ++i) {</code><br>
+          <code><span class="space">2</span>double x = rand(mt);</code><br>
+          <code><span class="space">2</span>double f = func(x);</code><br>
+          <code><span class="space">2</span>if (f_max &lt; f) {</code><br>
+          <code><span class="space">3</span>f_max = f;</code><br>
+          <code><span class="space">3</span>x_max = x;</code><br>
+          <code><span class="space">2</span>}</code><br>
+          <code><span class="space">2</span>plot(i, f_max, x_max);</code><br>
+          <code><span class="space">1</span>}</code><br><br>
+          <code><span class="space">1</span>// 結果を出力</code><br>
+          <code><span class="space">1</span>cout &lt;&lt; f_max &lt;&lt; endl;</code><br>
+          <code><span class="space">1</span>cout &lt;&lt; x_max &lt;&lt; endl;</code><br>
+          <code>}</code>
+        </div>
+        <h4>Python ソースコード</h4>
+        <div class="code">
+          <code>import numpy as np</code><br>
+          <code>from matplotlib import pyplot as plt</code><br><br>
+          <code>def plot(count, f, x):</code><br>
+          <code><span class="space">1</span>print(f'{count},{f},{x}')</code><br><br>
+          <code>def func(x):</code><br>
+          <code><span class="space">1</span>return np.sin(x) + 0.5*x # 計算式記述</code><br><br>
+          <code># 繰り返し数</code><br>
+          <code>M = 100 # 繰り返し数を指定</code><br><br>
+          <code># xの制約条件</code><br>
+          <code>min = 0.0 # 最小値を指定</code><br>
+          <code>max = 16.0 # 最大値を指定</code><br><br>
+          <code># fの最大値とそのときのx</code><br>
+          <code>f_max = -np.inf</code><br>
+          <code>x_max = None</code><br><br>
+          <code># f_maxの軌跡を格納した配列(0で初期化)</code><br>
+          <code>f_max_list = np.zeros(M)</code><br><br>
+          <code># シード値設定</code><br>
+          <code>np.random.seed(0)</code><br><br>
+          <code># M回試す</code><br>
+          <code>for i in range(M):</code><br>
+          <code><span class="space">1</span>x = np.random.rand() * (max - min) + min</code><br>
+          <code><span class="space">1</span>f = func(x)</code><br>
+          <code><span class="space">1</span>if f_max &lt; f:</code><br>
+          <code><span class="space">2</span>f_max = f</code><br>
+          <code><span class="space">2</span>x_max = x</code><br>
+          <code><span class="space">1</span>f_max_list[i] = f_max</code><br>
+          <code><span class="space">1</span>plot(i, f_max, x_max)</code><br><br>
+          <code># 結果を出力</code><br>
+          <code>print(f_max)</code><br>
+          <code>print(x_max)</code><br>
+          <code>plt.plot(f_max_list)</code>
+        </div>
+      </section>
+      <h3>局所探索法</h3>
+      <section>
+        <h4>アルゴリズム</h4>
+        <p>近傍 $N(\boldsymbol{x})$ を定め、その中でランダムな $x$ を出力する。</p>
+        <p>近傍は大抵「$x_0$ から距離 $\alpha$ 以内」と定義される。($x_0$ とは <code>x_max</code> のこと)</p>
+        <p class="center">
+          <img src="./png/Onosecond.drawio.svg" style="width: 100%; max-width: 500px;">
+        </p>
+        <p>必要となるパラメータは次の $3$ つである。</p>
+        <ul>
+          <li>終了条件（繰り返し数 $M$）</li>
+          <li>近傍 $N(\boldsymbol{x})$ 例:「 $N(x):x_0-5.0\le x\le x_0+5.0$ 」</li>
+        </ul>
+        <h4>C ソースコード</h4>
+        <div class="code">
+          <code>#include &lt;stdio.h&gt;</code><br>
+          <code>#include &lt;stdlib.h&gt;</code><br>
+          <code>#include &lt;float.h&gt;</code><br>
+          <code>#include &lt;math.h&gt;</code><br><br>
+          <code>void plot(int count, double f, double x) {</code><br>
+          <code><span class="space">1</span>printf("%d,%f,%f\n", count, f, x);</code><br>
+          <code>}</code><br><br>
+          <code>double func(double x) {</code><br>
+          <code><span class="space">1</span>return sin(x) + 0.5*x; // 計算式記述</code><br>
+          <code>}</code><br><br>
+          <code>int main(void) {</code><br>
+          <code><span class="space">1</span>// 繰り返し数</code><br>
+          <code><span class="space">1</span>const int M = 100; // 繰り返し数を指定</code><br><br>
+          <code><span class="space">1</span>// xの制約条件</code><br>
+          <code><span class="space">1</span>const double min = 0.0; // 最大値を指定</code><br>
+          <code><span class="space">1</span>const double max = 16.0; // 最小値を指定</code><br><br>
+          <code><span class="space">1</span>// N(x)の範囲</code><br>
+          <code><span class="space">1</span>const double dist = 5.0; // x_maxからの距離を指定</code><br><br>
+          <code><span class="space">1</span>// シード値を0に設定</code><br>
+          <code><span class="space">1</span>srand(0);</code><br><br>
+          <code><span class="space">1</span>// fの最大値とそのときのx</code><br>
+          <code><span class="space">1</span>double f_max = DBL_MIN;</code><br>
+          <code><span class="space">1</span>double x_max = (double)rand()/RAND_MAX * (max-min) + min;</code><br><br>
+          <code><span class="space">1</span>// M回試す</code><br>
+          <code><span class="space">1</span>for (int i = 0; i &lt; M; ++i) {</code><br>
+          <code><span class="space">2</span>double x = ((double)rand()/RAND_MAX - 0.5) * 2*dist + x_max;</code><br>
+          <code><span class="space">2</span>if (min &lt; x && x &lt; max) {</code><br>
+          <code><span class="space">3</span>double f = func(x);</code><br>
+          <code><span class="space">3</span>if (f_max &lt; f) {</code><br>
+          <code><span class="space">4</span>f_max = f;</code><br>
+          <code><span class="space">4</span>x_max = x;</code><br>
+          <code><span class="space">3</span>}</code><br>
+          <code><span class="space">2</span>}</code><br>
+          <code><span class="space">2</span>plot(i, f_max, x_max);</code><br>
+          <code><span class="space">1</span>}</code><br><br>
+          <code><span class="space">1</span>// 結果を出力</code><br>
+          <code><span class="space">1</span>printf("%f\n", f_max);</code><br>
+          <code><span class="space">1</span>printf("%f\n", x_max);</code><br>
+          <code>}</code>
+        </div>
+        <h4>C++ ソースコード</h4>
+        <div class="code">
+          <code>#include &lt;iostream&gt;</code><br>
+          <code>#include &lt;limits&gt;</code><br>
+          <code>#include &lt;random&gt;</code><br>
+          <code>#include &lt;cmath&gt;</code><br>
+          <code>using namespace std;</code><br><br>
+          <code>void plot(int count, double f, double x) {</code><br>
+          <code><span class="space">1</span>cout &lt;&lt; count &lt;&lt; ',' &lt;&lt; f &lt;&lt; ',' &lt;&lt; x &lt;&lt; endl;</code><br>
+          <code>}</code><br><br>
+          <code>double func(double x) {</code><br>
+          <code><span class="space">1</span>return sin(x) + 0.5*x; // 計算式記述</code><br>
+          <code>}</code><br><br>
+          <code>int main(void) {</code><br>
+          <code><span class="space">1</span>// 繰り返し数</code><br>
+          <code><span class="space">1</span>const int M = 100; // 繰り返し数を指定</code><br><br>
+          <code><span class="space">1</span>// xの制約条件</code><br>
+          <code><span class="space">1</span>const double min = 0.0; // 最大値を指定</code><br>
+          <code><span class="space">1</span>const double max = 16.0; // 最小値を指定</code><br><br>
+          <code><span class="space">1</span>// N(x)の範囲</code><br>
+          <code><span class="space">1</span>const double dist = 5.0; // x_maxからの距離を指定</code><br><br>
+          <code><span class="space">1</span>// シード値0の疑似乱数生成器を宣言</code><br>
+          <code><span class="space">1</span>mt19937_64 mt(0);</code><br>
+          <code><span class="space">1</span>uniform_real_distribution&lt;&gt; rand(-dist, dist);</code><br>
+          <code><span class="space">1</span>uniform_real_distribution&lt;&gt; rand_zero(min, max);</code><br><br>
+          <code><span class="space">1</span>// fの最大値とそのときのx</code><br>
+          <code><span class="space">1</span>double f_max = -numeric_limits&lt;double&gt;::infinity();</code><br>
+          <code><span class="space">1</span>double x_max = rand_zero(mt);</code><br><br>
+          <code><span class="space">1</span>// M回試す</code><br>
+          <code><span class="space">1</span>for (int i = 0; i &lt; M; ++i) {</code><br>
+          <code><span class="space">2</span>double x = rand(mt) + x_max;</code><br>
+          <code><span class="space">2</span>if (min &lt; x && x &lt; max) {</code><br>
+          <code><span class="space">3</span>double f = func(x);</code><br>
+          <code><span class="space">3</span>if (f_max &lt; f) {</code><br>
+          <code><span class="space">4</span>f_max = f;</code><br>
+          <code><span class="space">4</span>x_max = x;</code><br>
+          <code><span class="space">3</span>}</code><br>
+          <code><span class="space">2</span>}</code><br>
+          <code><span class="space">2</span>plot(i, f_max, x_max);</code><br>
+          <code><span class="space">1</span>}</code><br><br>
+          <code><span class="space">1</span>// 結果を出力</code><br>
+          <code><span class="space">1</span>cout &lt;&lt; f_max &lt;&lt; endl;</code><br>
+          <code><span class="space">1</span>cout &lt;&lt; x_max &lt;&lt; endl;</code><br>
+          <code>}</code>
+        </div>
+        <h4>Python ソースコード</h4>
+        <div class="code">
+          <code>import numpy as np</code><br><br>
+          <code>def func(x):</code><br>
+          <code><span class="space">1</span>return np.sin(x) + 0.5*x # 計算式記述</code><br><br>
+          <code>M = 10 # 繰り返し数</code><br>
+          <code>N = 100 # 近傍中の乱数生成数</code><br><br>
+          <code># xの制約条件</code><br>
+          <code>min = 0.0 # 最小値を指定</code><br>
+          <code>max = 16.0 # 最大値を指定</code><br><br>
+          <code># 近傍の設定 (x_maxから5.0以内)</code><br>
+          <code>dist = 5.0 # 距離を指定</code><br><br>
+          <code># シード値を0に設定</code><br>
+          <code>np.random.seed(0)</code><br><br>
+          <code># fの最大値とそのときのx</code><br>
+          <code>f_max = -float('inf')</code><br>
+          <code>x_max = np.random.rand() * (max-min) + min # 最初のx_maxを定めておく</code><br><br>
+          <code>for i in range(N):</code><br>
+          <code><span class="space">1</span>xs = x_max + (np.random.rand(N)-0.5)*2*dist</code><br>
+          <code><span class="space">1</span>xs = xs[(min &lt;= xs) & (xs &lt;= max)]</code><br>
+          <code><span class="space">1</span>fs = func(xs)</code><br>
+          <code><span class="space">1</span>idx = fs.argmax()</code><br>
+          <code><span class="space">1</span>if f_max &lt; fs[idx]:</code><br>
+          <code><span class="space">2</span>f_max = fs[idx]</code><br>
+          <code><span class="space">2</span>x_max = xs[idx]</code><br>
+          <code><span class="space">1</span>else:</code><br>
+          <code><span class="space">2</span>break</code><br><br>
+          <code>print(f_max)</code><br>
+          <code>print(x_max)</code><br>
+        </div>
+      </section>
+      <h3>模擬焼きなまし法</h3>
+      <section>
+        <h4>アルゴリズム</h4>
+        <p>ランダム性を用いて局所最適解からの脱出を試みる手法である。</p>
+        <p>局所最適解から抜け出すために確率的に解の改悪を許す。</p>
+        <p class="center"><img src="./png/模擬焼きなまし法.png" style="width: 100%; max-width: 700px;"></p>
+        <h4>C ソースコード</h4>
+        <div class="code">
+          <code></code>
+        </div>
+      </section>
+    </section>
+    <script src="index.js"></script>
+    <script>
+    MathJax = {
+        tex: {
+        inlineMath: [['$', '$'], ['$$', '$$']]
+        }
+    };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+  </body>
+</html>

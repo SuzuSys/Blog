@@ -1,0 +1,50 @@
+body {
+    background-color: gray;
+}
+#sheet {
+    position: relative;
+    width: calc(793px - 2 * 30mm);
+    margin: auto;
+    padding: 30mm;
+    font-size: 10.5pt;
+    margin: 0mm;
+    font-family: serif;
+    background-color: white;
+}
+p {
+    margin-bottom: -12px;
+}
+li p {
+    margin-bottom: 0px;
+}
+.center {
+    text-align: center;
+}
+.left {
+    text-align: left;
+}
+table {
+    margin-top: 12px;
+}
+
+.right {
+    text-align: right;
+}
+code {
+    font-family: note monospace,SFMono-Regular,Consolas,Menlo,Courier,monospace;
+}
+div.code {
+    border: 2px solid black;
+    padding: 10px;
+    margin: 5px;
+    break-inside: avoid-page;
+}
+.border {
+    border: 2px black solid;
+}
+@media print {
+    body {
+        margin: 0px;
+        padding: 0px;
+    }
+}

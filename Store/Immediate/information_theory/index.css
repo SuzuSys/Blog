@@ -1,0 +1,21 @@
+div.ie {
+    border-left: 2px gray solid;
+    padding-left: 5px;
+}
+div.indent {
+    padding-left: 25px;
+}
+td {
+    vertical-align: top;
+}
+
+table.space td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+table.line {
+    border: 2px solid black;
+}
+table.line th {
+    border-bottom: 2px solid black;
+}

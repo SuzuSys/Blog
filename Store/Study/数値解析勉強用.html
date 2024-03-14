@@ -8,7 +8,6 @@
   </head>
   <body>
     <header><h1>数値解析勉強用</h1></header>
-    <p class="right">f18102 4J 25 鈴木穣成</p>
     <h2>数値積分の解法</h2>
     <section>
       <h3>台形法</h3>
@@ -197,6 +196,255 @@
         &\fallingdotseq& \frac{h}{3}\left( f(a)+f(b)+4\sum_{0\le i\lt n}f(a+h(2i+1)) + 2\sum_{1\le j\lt n}f(a+h(2j)) \right)
         \end{eqnarray}
         $$
+      </section>
+      <h3>オイラー法</h3>
+      <section>
+        <h4>理論</h4>
+        <p>常微分方程式を次のように置く。</p>
+        $$\frac{dx}{dt} = f(t,x)$$
+        <p>刻み幅を $h$ とする。</p>
+        <p>時刻 $t+h$ における値 $x(t+h)$ は次のように計算する。</p>
+        $$x(t+h) = x(t) + h\cdot f(t,x)$$
+        <p>テイラー展開になぞらえると、$1$ ステップの推定誤差は $O(h^2)$ であることがわかる。</p>
+        $$
+        \begin{eqnarray}
+        x(t+h)
+        &=& \sum_{n=0}^1\frac{x^{(n)}(t)}{n!}h^n+O(h^2) \\
+        &=& x(t) + h\cdot f(t,x) + O(h^2)
+        \end{eqnarray}
+        $$
+      </section>
+      <h3>ルンゲ・クッタ法</h3>
+      <section>
+        <h4>理論</h4>
+        <p>常微分方程式を次のように置く。</p>
+        $$\frac{dx}{dt} = f(t,x)$$
+        <p>刻み幅を $h$ とする。</p>
+        <p>時刻 $t+h$ における値 $x(t+h)$ は次のように計算する。</p>
+        $$
+        \begin{eqnarray}
+        x(t+h) &=& x(t) + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4) + O(h^5) \\\\
+        k_1 &=& f(t,x) \\
+        k_2 &=& f\left( t + \frac{h}{2} , x + \frac{h}{2}k_1 \right) \\
+        k_3 &=& f\left( t + \frac{h}{2} , x + \frac{h}{2}k_2 \right) \\
+        k_4 &=& f\left( t + h , x + hk_4 \right)
+        \end{eqnarray}
+        $$
+        <p>テイラー展開になぞらえると、$1$ ステップの推定誤差は $O(h^5)$ であることがわかる。</p>
+        <p>まず、二変数関数のテイラーの定理は次のようになる。</p>
+        <p class="center">二変数関数 $f(x,y)$ において、</p>
+        $$
+        f(a+h, b+k) = \sum_{t=0}^n\frac{1}{t!}\left( h\frac{\partial}{\partial x} + k\frac{\partial}{\partial y} \right)^t f(a,b) + R_{n+1}
+        $$
+        $$
+        R_{n+1} = \frac{1}{(n+1)!}\left( h\frac{\partial}{\partial x} + k\frac{\partial}{\partial y} \right)^{n+1} f(a + \theta h,b+\theta k)
+        $$
+        <p class="center">を満たす $\theta$ が $0\lt\theta\lt 1$ の間に存在する。</p>
+        <p>これを踏まえ、 $k_1, k_2, k_3, k_4$ を展開する。</p>
+        $$
+        k_1 = f(t,x)
+        $$
+        $$
+        \begin{eqnarray}
+        k_2 &=& f \left( t+\frac{h}{2}, x+\frac{h}{2}k_1 \right) \\
+        &=& \sum_{i=0}^3 \frac{1}{i!}\left( \frac{h}{2}\frac{\partial}{\partial t} +\frac{h}{2}f\frac{\partial}{\partial x} \right)^i f + O(h^4) \\
+        &=& \sum_{i=0}^3 \frac{1}{i!}\left(\frac{h}{2}\right)^i\left( \frac{\partial}{\partial t} + f\frac{\partial}{\partial x} \right)^i f + O(h^4) \\
+        &=& f + \frac{h}{2}\left( \frac{\partial}{\partial t} + f\frac{\partial}{\partial x} \right)f + \frac{1}{2}\frac{h^2}{4}\left( \frac{\partial^2}{\partial t^2} + 2f\frac{\partial^2}{\partial t \partial x} + f^2\frac{\partial^2}{\partial x^2}\right)f \\
+        && + \frac{1}{6}\frac{h^3}{8}\left( \frac{\partial^3}{\partial t^3} + 3f\frac{\partial^3}{\partial t^2 \partial x} + 3f^2\frac{\partial^3}{\partial t \partial x^2} + f^3\frac{\partial^3}{\partial x^3} \right)f + O(h^4) \\
+        &=& f + \frac{h}{2}(f_t + f_xf) + \frac{h^2}{8}(f_{tt}+2f_{tx}f+f_{xx}f^2) \\
+        && +\frac{h^3}{48}(f_{ttt}+2f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3) + O(h^4)
+        \end{eqnarray}
+        $$
+        <p>$k_3$ の展開では $k_2$ を何次までテイラー展開するかということに注意する。</p>
+        $$
+        \begin{eqnarray}
+        k_3 &=& f\left( t+\frac{h}{2}, x+\frac{h}{2}k_2 \right) \\
+        &=& f + \frac{h}{2}(f_t + f_xk_2) + \frac{h^2}{8}(f_{tt} + 2f_{tx}k_2 + f_{xx}k_2^2) \\
+        && +\frac{h^3}{48}(f_{ttt}+3f_{ttx}k_2+3f_{txx}k_2^2+f_{xxx}k_2^3) + O(h^4)
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+        &=& f + \frac{h}{2}\left\{ f_t + f_x\left( f + \frac{h}{2}(f_t+f_xf) + \frac{h^2}{8}(f_{tt}+2f_{tx}f + f_{xx}f^2) + O(h^3) \right) \right\} \\
+        && +\frac{h^2}{8} \left\{ f_{tt} + 2f_{tx}\left( f + \frac{h}{2}(f_t+f_xf) + O(h^2) \right) + f_{xx}\left( f + \frac{h}{2}(f_t+f_xf)+O(h^2) \right)^2 \right\} \\
+        && +\frac{h^3}{48}\left\{\phantom{\frac{0}{0}} f_{ttt} + 3f_{ttx}(f+O(h)) + 3f_{txx}(f+O(h))^2+f_{xxx}(f+O(h))^3 \phantom{\frac{0}{0}} \right\} + O(h^4) \\
+        &=& f + \frac{h}{2} \left( f_t + f_xf + \frac{h}{2}f_tf_x + \frac{h}{2}f_x^2f+\frac{h^2}{8}f_{tt}f_x+\frac{h^2}{4}f_{tx}f_xf+\frac{h^2}{8}f_{xx}f_xf^2+O(h^3) \right) \\
+        && +\frac{h^2}{8}\left\{ \phantom{\frac{0}{0}} f_{tt} + 2f_{tx}f + hf_{tx}f_t + hf_{tx}f_xf+O(h^2) \right. \\
+        && +f_{xx}\left. \left(f^2+hf(f_t+f_xf) +\cancel{O(h^2)}+ \cancel{\frac{h^2}{4}(f_t^2+2f_tf_xf+f_x^2f^2)} +O(h^2)+\cancel{O(h^4)} \right)  \right\} \\ 
+        && +\frac{h^3}{48} \left\{ \phantom{\frac{0}{0}} f_{ttt}+3f_{ttx}f+O(h) + 3f_{txx}(f^2+O(h)+\cancel{O(h^2)}) \right. \\
+        && \phantom{+\frac{h^3}{48}0\frac{0}{0}} \left. +f_{xxx} (f^3 + O(h) + \cancel{O(h^2)} + \cancel{O(h^3)}) \phantom{\frac{0}{0}} \right\} + O(h^4) \\
+        &=& f + \frac{h}{2} \left( f_t + f_xf + \frac{h}{2}f_tf_x + \frac{h}{2}f_x^2f+\frac{h^2}{8}f_{tt}f_x+\frac{h^2}{4}f_{tx}f_xf+\frac{h^2}{8}f_{xx}f_xf^2+O(h^3) \right) \\
+        && +\frac{h^2}{8}\left( \phantom{\frac{0}{0}} f_{tt} + 2f_{tx}f + hf_{tx}f_t + hf_{tx}f_xf+\cancel{O(h^2)} \right. \\
+        && \phantom{+\frac{h^2}{8}\{ \frac{0}{0}} +\left. f_{xx}f^2 + hf_{xx}f_tf + hf_{xx}f_xf^2+O(h^2) \phantom{\frac{0}{0}} \right) \\ 
+        && +\frac{h^3}{48}\left( f_{ttt}+3f_{ttx}f+\cancel{O(h)}+3f_{txx}f^2+ \cancel{O(h)} + f_{xxx}f^3+O(h) \right)+O(h^4) \\
+        &=& f + \frac{h}{2}(f_t+f_xf) \\
+        && +\frac{h^2}{4}f_tf_x+\frac{h^2}{4}f_x^2f+\frac{h^3}{16}f_{tt}f_x+\frac{h^3}{8}f_{tx}f_xf+\frac{h^3}{16}f_{xx}f_xf^2+\cancel{O(h^4)} \\
+        && +\frac{h^2}{8}( f_{tt} + 2f_{tx}f + f_{xx}f^2 ) \\
+        && + \frac{h^3}{8}f_{tx}f_t+\frac{h^3}{8}f_{tx}f_xf + \frac{h^3}{8}f_{xx}f_tf+\frac{h^3}{8}f_{xx}f_xf^2 + \cancel{O(h^4)} \\
+        && + \frac{h^3}{48}( f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 ) + \cancel{O(h^4)} + O(h^4) \\
+        &=& f + \frac{h}{2}(f_t+f_xf) + \frac{h^2}{8}(f_{tt}+2f_{tx}f + f_{xx}f^2 + 2f_tf_x + 2f_x^2f) \\
+        && + \frac{h^3}{48} ( f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 + 3f_{tt}f_x + 6f_{tx}f_xf + 3f_{xx}f_xf^2\\
+        &&\phantom{+\frac{h^3}{48} (} + 6f_{tx}f_t + 6f_{tx}f_xf + 6f_{xx}f_tf+6f_{xx}f_xf^2 ) + O(h^4)
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+        k_3&=& f + \frac{h}{2}(f_t+f_xf) + \frac{h^2}{8}(f_{tt}+2f_{tx}f + f_{xx}f^2 + 2f_tf_x + 2f_x^2f) \\
+        && + \frac{h^3}{48} ( f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 \\
+        &&\phantom{+\frac{h^3}{48} (} + 3f_{tt}f_x + 12f_{tx}f_xf + 9f_{xx}f_xf^2 + 6f_{tx}f_t + 6f_{xx}f_tf) + O(h^4)
+        \end{eqnarray}
+        $$
+        <p>$k_4$ も同様、$k_3$ を何次までテイラー展開するかということに注意する。</p>
+        $$
+        \begin{eqnarray}
+        k_4 &=& f(t+h, x+hk_3) \\
+        &=& \sum_{i=0}^3\frac{1}{i!}\left( h\frac{\partial}{\partial t} + hk_3\frac{\partial}{\partial x} \right)^if+O(h^4) \\
+        &=& \sum_{i=0}^3\frac{1}{i!}h^i\left( \frac{\partial}{\partial t} + k_3\frac{\partial}{\partial x} \right)^if+O(h^4) \\
+        &=& f + h\left( \frac{\partial}{\partial t} + k_3\frac{\partial}{\partial x} \right)f + \frac{h^2}{2}\left( \frac{\partial^2}{\partial t^2}+2k_3\frac{\partial^2}{\partial t\partial x} + k_3^2\frac{\partial ^2}{\partial x^2} \right)f \\
+        && + \frac{h^3}{6}\left( \frac{\partial^3}{\partial t^3} + 3k_3\frac{\partial^3}{\partial t^2\partial x} + 3k_3^2\frac{\partial^3}{\partial t \partial x^2} + k_3^3\frac{\partial^3}{\partial x^3} \right)f+O(h^4) \\
+        &=& f + h(f_t+k_3f_x) + \frac{h^2}{2}(f_{tt} + 2k_3f_{tx} + k_3^2f_{xx}) \\
+        && + \frac{h^3}{6}(f_{ttt} + 3k_3f_{ttx} + 3k_3^2f_{txx} + k_3^3f_{xxx}) + O(h^4) \\
+        &=& f + h\left( f_t+\left\{ f + \frac{h}{2}(f_t+f_xk_2) + \frac{h^2}{8}(f_{tt}+2f_{tx}k_2 + f_{xx}k_2^2) + O(h^3) \right\}f_x \right) \\
+        && + \frac{h^2}{2} \left( f_{tt} + 2\left\{ f + \frac{h}{2}(f_t + f_xk_2) + O(h^2) \right\}f_{tx} + \left\{ f+\frac{h}{2}(f_t+f_xk_2) + O(h^2) \right\}^2f_{xx} \right) \\
+        && + \frac{h^3}{6} \left( f_{ttt} + 3\{ f + O(h) \}f_{ttx} + 3\{ f + O(h) \}^3f_{xxx} \right) + O(h^4) \\
+        &=&  f + h\left( f_t + \left\{ f + \frac{h}{2}\left( f_t + f_x \left\{ f + \frac{h}{2}(f_t + f_xf) +O(h^2) \right\} \right) \right. \right. \\
+        && \phantom{f + h( f_t + \{0} \left. \left. +\frac{h^2}{8} \left( f_{tt} + 2f_{tx} \{ f + O(h) \} + f_{xx} \{ f + O(h) \}^2 \right) + O(h^3) \right\} f_x \right) \\
+        && + \frac{h^2}{2}\left( f_{tt} +2\left\{ f + \frac{h}{2}(f_t+f_x\{ f + O(h) \})+O(h^2) \right\} f_{tx} \right. \\
+        && \phantom{+ \frac{h^2}{2}(} \left. +\left\{ f + \frac{h}{2} (f_t + f_x\{ f + O(h) \}) + O(h^2) \right\}^2f_{xx} \right) \\
+        && +\frac{h^3}{6} \left( f_{ttt} + 3f_{ttx}f + O(h) + 3\left\{ f^2 + O(h) + \cancel{O(h^2)} \right\}f_{txx} \right. \\
+        && \phantom{+\frac{h^3}{6}(}\left. +\left\{ f^3 + O(h) + \cancel{O(h^2)} + \cancel{O(h^3)} \right\}f_{xxx} \right) +O(h^4) \\
+        &=& f + h\left( f_t + \left\{ f + \frac{h}{2} \left( f_t + f_x\left\{ f + \frac{h}{2}f_t + \frac{h}{2}f_xf + O(h^2) \right\} \right) \right. \right. \\
+        && \phantom{ f + h\( f_t + \{0 } \left. \left. +\frac{h^2}{8}\left( f_{tt} + 2f_{tx}f + O(h) + f_{xx}\left\{ f^2 + O(h) + \cancel{O(h^2)} \right\} \right) +O(h^3) \right\} f_x \right) \\
+        && + \frac{h^2}{2}\left( f_{tt} +2\left\{ f + \frac{h}{2}\left( f_t+f_xf + O(h) \right) +O(h^2) \right\} f_{tx} \right. \\
+        && \phantom{ + \frac{h^2}{2}(0 } \left. +\left\{ f + \frac{h}{2}\left( f_t + f_xf + O(h) \right) +O(h^2) \right\}^2 f_{xx} \right) \\
+        && + \frac{h^3}{6} \left( f_{ttt} + 3f_{ttx}f + \cancel{O(h)} + 3f_{txx}f^2 + \cancel{O(h)} + f_{xxx}f^3 + O(h) \right) + O(h^4)
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+        &=& f + h\left( f_t + \left\{ f + \frac{h}{2}\left( f_t + f_xf+\frac{h}{2}f_tf_x + \frac{h}{2}f_x^2f + O(h^2) \right) \right.\right. \\
+        && \phantom{f + h( f_t + \{0} \left. \left. +\frac{h^2}{8}\left( f_{tt} + 2f_{tx}f + \cancel{O(h)} + f_{xx}f^2 + O(h) \right) + O(h^3) \right\} f_x \right) \\
+        && +\frac{h^2}{2} \left( f_{tt} + 2\left\{ f + \frac{h}{2}f_t + \frac{h}{2}f_xf + \cancel{O(h^2)} + O(h^2) \right\} f_{tx} \right. \\
+        && \phantom{+\frac{h^2}{2}(0} \left. +\left\{ f + \frac{h}{2}f_t + \frac{h}{2}f_xf + \cancel{O(h^2)} + O(h^2) \right\}^2 f_{xx} \right) \\
+        && +\frac{h^3}{6} \left( f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 \right) + \cancel{ O(h^4) } + O(h^4) \\
+        &=& f + h\left( f_t + \left\{ f + \frac{h}{2}f_t + \frac{h}{2}f_xf + \frac{h^2}{4}f_tf_x + \frac{h^2}{4} f_x^2f + \cancel{O(h^3)} \right.\right. \\
+        && \phantom{f + h( f_t + \{0} \left. \left. \frac{h^2}{8}f_{tt} + \frac{h^2}{4}f_{tx}f + \frac{h^2}{8}f_{xx}f^2 + O(h^3) \right\} f_x \right) \\
+        && + \frac{h^2}{2}\left(\phantom{\cancel{\frac{0}{0}}} f_{tt} + 2f_{tx}f + hf_{tx}f_t + hf_{tx}f_xf + O(h^2) \right. \\
+        && \phantom{+ \frac{h^2}{2}(0} \left. + \left\{ f^2 + hf_tf + hf_xf^2 + O(h^2) + \cancel{\frac{h^2}{4}f_t^2} + \cancel{\frac{h^2}{2}f_tf_xf} + \cancel{O(h^3)} \right. \right. \\
+        && \phantom{+ \frac{h^2}{2}(0 + \{0} \left.\left. + \cancel{\frac{h^2}{4}f_x^2f^2} + \cancel{O(h^3)} + \cancel{O(h^4)} \right\} f_{xx} \phantom{\frac{0}{0}} \right) \\
+        && + \frac{h^3}{6} \left( f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 \right) + O(h^4) \\
+        &=& f + h\left( f_t + f_xf + \frac{h}{2}f_tf_x + \frac{h}{2}f_x^2f + \frac{h^2}{4}f_tf_x^2 + \frac{h^2}{4}f_x^3f \right. \\
+        && \phantom{f + h(0} \left. + \frac{h^2}{8}f_{tt}f_x + \frac{h^2}{4}f_{tx}f_xf + \frac{h^2}{8}f_{xx}f_xf^2 + \cancel{O(h^3)} \right) \\
+        && \frac{h^2}{2} \left( f_{tt} + 2f_{tx}f + hf_{tx}f_t + hf_{tx}f_xf + \cancel{O(h^2)} \right. \\
+        && \phantom{\frac{h^2}{2} (0}\left. + f_{xx}f^2 + hf_{xx}f_tf + hf_{xx}f_xf^2 + \cancel{O(h^2)} \right) \\
+        && + \frac{h^3}{6} \left( f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 \right) + O(h^4) \\
+        &=& f + h(f_t + f_xf) \\
+        && +\frac{h^2}{2}f_tf_x + \frac{h^2}{2}f_x^2f + \frac{h^3}{4}f_tf_x^2 + \frac{h^3}{4}f_x^3f + \frac{h^3}{8}f_{tt}f_x + \frac{h^3}{4}f_{tx}f_xf + \frac{h^3}{8}f_{xx}f_xf \\
+        && +\frac{h^2}{2}(f_{tt} + 2f_{tx}f + f_{xx}f^2) \\
+        && +\frac{h^3}{2}f_{tx}f_t + \frac{h^3}{2}f_{tx}f_xf + \frac{h^3}{2}f_{xx}f_tf + \frac{h^3}{2}f_{xx}f_xf^2 \\
+        && +\frac{h^3}{6}( f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 ) + O(h^4)
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+        k_4 &=& f + h(f_t + f_xf) + \frac{h^2}{2}( f_{tt} + 2f_{tx}f + f_{xx}f^2 + f_tf_x + f_x^2f ) \\
+        && +\frac{h^3}{24} ( 4f_{ttt} + 12f_{ttx}f + 12f_{txx}f^2 + 4f_{xxx}f^3  \\
+        && \phantom{+\frac{h^3}{24}(0} +3f_{tt}f_x + 18f_{tx}f_xf + 15f_{xx}f_xf^2 + 12f_{tx}f_t + 12f_{xx}f_tf \\
+        && \phantom{+\frac{h^3}{24}(0}  + 6f_tf_x^2 + 6f_x^3f ) + O(h^4)
+        \end{eqnarray}
+        $$
+        <p>よって、$k_1,k_2,k_3,k_4$ は次のようになる。</p>
+        $$
+        \begin{eqnarray}
+        k_1 &=& f \\
+        k_2 &=& f + \frac{h}{2}(f_t + f_xf) + \frac{h^2}{8}(f_{tt}+2f_{tx}f+f_{xx}f^2) \\
+        && +\frac{h^3}{48}(f_{ttt}+2f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3) + O(h^4) \\
+        k_3&=& f + \frac{h}{2}(f_t+f_xf) + \frac{h^2}{8}(f_{tt}+2f_{tx}f + f_{xx}f^2 + 2f_tf_x + 2f_x^2f) \\
+        && + \frac{h^3}{48} ( f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 \\
+        &&\phantom{+\frac{h^3}{48} (} + 3f_{tt}f_x + 12f_{tx}f_xf + 9f_{xx}f_xf^2 + 6f_{tx}f_t + 6f_{xx}f_tf) + O(h^4) \\
+        k_4 &=& f + h(f_t + f_xf) + \frac{h^2}{2}( f_{tt} + 2f_{tx}f + f_{xx}f^2 + f_tf_x + f_x^2f ) \\
+        && +\frac{h^3}{24} ( 4f_{ttt} + 12f_{ttx}f + 12f_{txx}f^2 + 4f_{xxx}f^3  \\
+        && \phantom{+\frac{h^3}{24}(0} +3f_{tt}f_x + 18f_{tx}f_xf + 15f_{xx}f_xf^2 + 12f_{tx}f_t + 12f_{xx}f_tf \\
+        && \phantom{+\frac{h^3}{24}(0}  + 6f_tf_x^2 + 6f_x^3f ) + O(h^4)
+        \end{eqnarray}
+        $$
+        <p>すなわち、ルンゲクッタ法の公式は次のように展開される。</p>
+        $$
+        \begin{eqnarray}
+        x(t+h)-x(t) &=& \frac{h}{6} \left[ \phantom{\frac{0}{0}} \right. \\
+        && \phantom{\frac{h}{6}0} f + 2f + 2f + f \\
+        && \phantom{\frac{h}{6}0} + h \{\phantom{\{+}f_t + f_xf \\
+        && \phantom{\frac{h}{6}0 + h \{} + f_t + f_xf \\
+        && \phantom{\frac{h}{6}0 + h \{} + f_t + f_xf\phantom{0} \} \\
+        && \phantom{\frac{h}{6}0} + h^2 \left\{ \phantom{+\{} \frac{1}{4}(f_{tt} + 2f_{tx}f + f_{xx}f^2) \right. \\
+        && \phantom{\frac{h}{6}0 + h^2 \{0} +\frac{1}{4}(f_{tt} + 2f_{tx}f + f_{xx}f^2 + 2f_tf_x + 2f_x^2f) \\
+        && \left. \phantom{\frac{h}{6}0 + h^2 \{0} +\frac{1}{2}(f_{tt} + 2f_{tx}f + f_{xx}f^2 + f_tf_x + f_x^2f) \phantom{0} \right\} \\
+        && \phantom{\frac{h}{6}0} + h^3 \left\{ \phantom{+\{} \frac{1}{24}(f_{ttt}+3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3) \right. \\
+        && \phantom{\frac{h}{6}0 + h^2 \{0} +\frac{1}{24}(f_{ttt}+3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 \\
+        && \phantom{\frac{h}{6}0 + h^2 \{0\frac{1}{24}(00} +3f_{tt}f_x + 12f_{tx}f_xf + 9f_{xx}f_xf^2 + 6f_{tx}f_t + 6f_{xx}f_tf) \\
+        && \phantom{\frac{h}{6}0 + h^2 \{0} +\frac{1}{24}(4f_{ttt}+12f_{ttx}f + 12f_{txx}f^2 + 4f_{xxx}f^3 \\
+        && \phantom{\frac{h}{6}0 + h^2 \{0\frac{1}{24}(00} +3f_{tt}f_x + 18f_{tx}f_xf + 15f_{xx}f_xf^2 + 12f_{tx}f_t + 12f_{xx}f_tf \\
+        &&\left.\left.  \phantom{\frac{h}{6}0 + h^2 \{0\frac{1}{24}(00} +6f_tf_x^2+6f_x^3f) \phantom{\frac{0}{0}} \right\} \phantom{0} \right]\\
+        && +O(h^5)
+        \end{eqnarray}
+        $$
+        $$
+        \begin{eqnarray}
+        x(t+h)-x(t)&=& hf \\
+        && +\frac{h^2}{2}(f_t+f_xf) \\
+        && +\frac{h^3}{6}(f_{tt}+2f_{tx}f + f_{xx}f^2 + f_tf_x + f_x^2f) \\
+        && +\frac{h^4}{24} (f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 \\
+        && \phantom{+\frac{h^4}{24} (} + f_{tt}f_x + 5f_{tx}f_xf + 4f_{xx}f_xf^2 + 3f_{tx}f_t + 3f_{xx}f_tf + f_tf_x^2 + f_x^3f ) \\
+        && +O(h^5)
+        \end{eqnarray}
+        $$
+        <p>次に $x(t+h)$ をテイラー展開した式と、ルンゲクッタ法の公式を展開した式を、それぞれの項が全て一致することを確かめる。</p>
+        $$
+        \begin{eqnarray}
+        x(t+h)&=&\sum_{i=0}^4\frac{x^{(i)}(t)}{i!}h^i + O(h^5) \\
+        x(t+h)-x(t)&=&\sum_{i=1}^4\frac{x^{(i)}(t)}{i!}h^i + O(h^5) \\
+        &=& h\frac{dx}{dt}+\frac{h^2}{2}\frac{d^2x}{dt^2} + \frac{h^3}{6}\frac{d^3x}{dt^3} + \frac{h^4}{24}\frac{d^4x}{dt^4} + O(h^5) \\
+        &=& hf + \frac{h^2}{2}\frac{df}{dt} + \frac{h^3}{6}\frac{d^2f}{dt^2} + \frac{h^4}{24}\frac{d^3f}{dt^3} + O(h^5)
+        \end{eqnarray}
+        $$
+        <p>上記の式より係数 $h$ の項は一致することが示された。</p>
+        $$
+        \begin{eqnarray}
+        \frac{df}{dt} &=& \frac{\partial f}{\partial t}\frac{dt}{dt} + \frac{\partial f}{\partial x}\frac{dx}{dt} \\
+        &=& f_t + f_xf
+        \end{eqnarray}
+        $$
+        <p>上記の式より係数 $\displaystyle \frac{h^2}{2}$ の項は一致することが示された。</p>
+        $$
+        \begin{eqnarray}
+        \frac{d^2f}{dt^2} &=&  \frac{d}{dt}(f_t+f_xf) \\
+        &=& \frac{df_t}{dt} + \frac{df_x}{dt}f + f_x\frac{df}{dt} \\
+        &=& \frac{\partial f_t}{\partial t}\frac{dt}{dt} + \frac{\partial f_t}{\partial x}\frac{dx}{dt} + \left( \frac{\partial f_x}{\partial t}\frac{dt}{dt} + \frac{\partial f_x}{\partial x}\frac{dx}{dt} \right)f + f_x\left( \frac{\partial f}{\partial t}\frac{dt}{dt} + \frac{\partial f}{\partial x}\frac{dx}{dt} \right) \\
+        &=& f_{tt} + 2f_{tx}f + f_{xx}f^2 + f_tf_x + f_x^2f
+        \end{eqnarray}
+        $$
+        <p>上記の式より係数 $\displaystyle \frac{h^3}{6}$ の項は一致することが示された。</p>
+        $$
+        \begin{eqnarray}
+        \frac{d^3f}{dt^3} &=& \frac{d}{dt}( f_{tt} + 2f_{tx}f + f_{xx}f^2 + f_tf_x + f_x^2f ) \\
+        &=& \frac{df_{tt}}{dt} + 2\frac{df_{tx}}{dt}f+2f_{tx}\frac{df}{dt}+\frac{df_{xx}}{dt}f^2+2f_{xx}f\frac{df}{dt} \\
+        && + \frac{df_t}{dt}f_x + f_t\frac{df_x}{dt} + 2f_x\frac{df_x}{dt}f + f_x^2\frac{df}{dt} \\
+        &=& \frac{\partial f_{tt}}{dt}\frac{dt}{dt}+\frac{\partial f_{xx}}{\partial x}\frac{dx}{dt} \\
+        &&+2\left( \frac{\partial f_{tx}}{\partial t}\frac{dt}{dt}+\frac{\partial f_{tx}}{\partial x}\frac{dx}{dt} \right)f+2f_{tx}\left( \frac{\partial f}{\partial t}\frac{dt}{dt}+\frac{\partial f}{\partial x}\frac{dx}{dt} \right) \\
+        &&+\left( \frac{\partial f_{xx}}{\partial t}\frac{dt}{dt}+\frac{\partial f_{xx}}{\partial x}\frac{dx}{dt} \right)f^2+2f_{xx}f\left( \frac{\partial f}{\partial t}\frac{dt}{dt} + \frac{\partial f}{\partial x}\frac{dx}{dt} \right) \\
+        && +\left( \frac{\partial f_t}{\partial t}\frac{dt}{dt} + \frac{\partial f_t}{\partial x}\frac{dx}{dt}\right)f_x + f_t\left( \frac{\partial f_x}{\partial t}\frac{dt}{dt}+\frac{\partial f_x}{\partial x}\frac{dx}{dt} \right) \\
+        && +2f_x\left( \frac{\partial f_x}{\partial t}\frac{dt}{dt}+\frac{\partial f_x}{\partial x}\frac{dx}{dt} \right)f+f_x^2\left( \frac{\partial f}{\partial t}\frac{dt}{dt} + \frac{\partial f}{\partial x}\frac{dx}{dt} \right) \\
+        &=& f_{ttt} + f_{ttx}f \\
+        && + 2f_{ttx}f + 2f_{txx}f^2 + 2f_{tx}f_t + 2f_{tx}f_xf \\
+        && + f_{txx}f^2 + f_{xxx}f^3 + 2f_{xx}f_tf + 2f_{xx}f_xf^2 \\
+        && + f_{tt}f_x + f_{tx}f_xf + f_{tx}f_t + f_{xx}f_tf \\
+        && + 2f_{tx}f_xf + 2f_{xx}f_xf^2 + f_tf_x^2 + f_x^3f \\
+        &=& f_{ttt} + 3f_{ttx}f + 3f_{txx}f^2 + f_{xxx}f^3 \\
+        && + f_{tt}f_x + 5f_{tx}f_xf + 4f_{xx}f_xf^2 + 3f_{tx}f_t + 3f_{xx}f_tf + f_tf_x^2 + f_x^3f
+        \end{eqnarray}
+        $$
+        <p>上記の式より係数 $\displaystyle \frac{h^4}{24}$ の項は一致することが示された。</p>
+        <p>全ての項が一致するため、ルンゲクッタ法の1ステップの誤差は $O(h^5)$ であることが示された。</p>
       </section>
     </section>
     <script src="index.js"></script>

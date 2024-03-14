@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>初学者のための常微分方程式の数値解法</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="table.css">
+  </head>
+  <body>
+    <header><h1>初学者のための常微分方程式の数値解法</h1></header>
+    <h2>はじめに</h2>
+    <p>テイラー展開とオーダー記法を知っていれば、高校数学の範囲で理解できるようになっている。</p>
+    <h2>参考にした情報</h2>
+    <li>
+      <a href="https://ocw.kyoto-u.ac.jp/wp-content/uploads/2000/04/1999_introduction-to-simulation_11.pdf">Runge-Kutta法についてのノート（早川尚男）</a>
+    </li>
+    <h2>概要</h2>
+    <section>
+      <h3>常微分方程式</h3>
+      <p><strong>常微分方程式</strong>とは微分方程式の一種で、未知関数が本質的にただ一つの変数を持つものである場合をいう。すなわち、変数 $t$ の未知関数 $x(t)$ に対して、既知の関数 $F$ を用いて</p>
+      $$F(t,x(t),x^{(1)}(t),\cdots,x^{(n)}(t))=0$$
+      <p>という形にできるような関数方程式を常微分方程式という。(<a href="https://ja.wikipedia.org/wiki/%E5%B8%B8%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E5%BC%8F">Wikipedia</a>)</p>
+      <p>例えば、次の振り子の方程式:</p>
+      $$\frac{d^2\theta}{dt^2}=-\frac{g}{l}\sin\theta$$
+      <p>は、$\theta(t)$ は未知関数だが、既知関数 $F$ を次のように定義することができ、常微分方程式であることがわかる。</p>
+      $$F\left(t,\frac{d\theta}{dt},\frac{d^2\theta}{dt^2}\right)=\frac{d^2\theta}{dt^2}+\frac{g}{l}\sin\theta=0$$
+      <h3>初期値問題</h3>
+      <p>$N$ 個の変数 $\vec{y}=(y_1,\cdots,y_N)\in\mathbb{R}^N$ に関する $1$ 階常微分方程式:</p>
+      $$\frac{d\vec{y}}{dt}=f(t,\vec{y})$$
+      <p>について、その<strong>初期値問題</strong>とは、初期条件 $\vec{y}(t_0)=\vec{y}_0$ を満たす関数 $\vec{y}(t)$ を求めることである。</p>
+      <p>例えば次の振り子の方程式:</p>
+      $$\frac{d^2\theta}{dt^2}=-\frac{g}{l}\sin\theta$$
+      <p>は $2$ 回常微分方程式であるが、$\displaystyle \frac{d\theta}{dt}=\omega$ と置けば、$2$ 個の変数に関する $1$ 階常微分方程式:</p>
+      \begin{eqnarray}
+        \left\{
+          \begin{array}{l}
+            \displaystyle \frac{d\theta}{dt} =\omega \\
+            \displaystyle \frac{d\omega}{dt} =-\frac{g}{l}\sin\theta
+          \end{array}
+        \right.
+      \end{eqnarray}
+      <p>に帰着できる。</p>
+      <h3>常微分方程式の数値解法</h3>
+      <p>一般解を用いた初期値問題の解を<strong>厳密解</strong>と呼ぶ。</p>
+      <p>これまで様々な自然現象を記述するために多くの常微分方程式が作られ、多くの数学者たちがその初期値問題の厳密解を探求してきたが、手計算だけで厳密に解ける常微分方程式は多くない。<br>そのため多くの研究者たちが常微分方程式を数値的に解く技術について研究をしてきた。<br>最も標準的な手法は<strong>Runge-Kutta法</strong>であるが、他にも様々な解法が存在する。<br>解法が成り立つ根本的な理由を知ることで、用途に合った解法を選ぶことができる。<br>例えば<strong>Symplectic数値積分法</strong>は、保存量が存在する古典力学にのみ適用可能な数値解法で、Runge-Kutta法に比べ良い性質を示す。(<a href="https://ja.wikipedia.org/wiki/%E3%82%B7%E3%83%B3%E3%83%97%E3%83%AC%E3%82%AF%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF%E6%95%B0%E5%80%A4%E7%A9%8D%E5%88%86%E6%B3%95">Wikipedia</a>)</p>
+    </section>
+    <h2>Runge-Kutta法</h2>
+    <section>
+      <h3>概要</h3>
+      <p>Runge-Kutta法を略してRK法と呼ぶ。RK法は常微分方程式の数値解法として、その手軽さと収束の良さから標準的解法として採用されている。</p>
+      $$\frac{dy}{dt}=f(t,y(t))\phantom{000}y(t_0)=y_0$$
+      <p>この初期値問題をどう解くのか。</p>
+      <p>最も簡単な方法は $t_n$ から $t_{n+1}=t_n+h$ まで積分することである。( $h$ を<strong>刻み幅</strong>という。)</p>
+      \begin{eqnarray}
+      y(t_{n+1})&=&y(t_n)+\int_{t_n}^{t_{n+1}}f(\tau,y(\tau))d\tau \\
+      &=& y(t_n)+h\int_0^1f(t_n+h\tau,y(t_n+h\tau))
+      \end{eqnarray}
+      <p>実際には全ての $y$ の情報がない限り、積分は実行できないので</p>
+      $$y_{n+1}=y_n+h\sum_{j=1}^{\nu}b_jf(t_n+c_jh,y(t_n+c_jh)),\phantom{000}n=0,1,\cdots$$
+      <p>に置き換える。ただし $c_1=0$ としておいて初項は $f(t_n,y(t_n))$ という既知の情報だけで書けるものとする。</p>
+      <p>こうすれば $t_n+c_jh$ での $y(t_n+c_jh)$ を知ることで、$y_{n+1}$ 及び $y(t_{n+1})$ を知ることができる。</p>
+      <p>( $y(t_{n+1})$ と $y_{n+1}$ を使い分けているが、$y(t_{n+1})$ は厳密解、$y_{n+1}$ は計算で算出した値、というニュアンスで良い。)</p>
+      <p>$y(t_n+c_jh)$ の近似値を $\xi_j$ と記す:</p>
+      $$\xi_j=y(t_n+c_jh)$$
+      <p>RK法のアイデアは $\xi_j$ を過去の $f(t_n,\xi_1), f(t_n+c_2h, \xi_2),\cdots,f(t_n+c_{j-1}h,\xi_{j-1})$ の線形結合を用いて表そうというものである。</p>
+      <p>下の式に $c_1$ がないのは $c_1=0$ を考慮してのことである。</p>
+      \begin{eqnarray}
+      \xi_1 &=& y_n \\
+      \xi_2 &=& y_n+ha_{21}f(t_n,\xi_1) \\
+      \xi_3 &=& y_n+ha_{21}f(t_n,\xi_1) + ha_{32}f(t_n+c_2h,\xi_2) \\
+      &\vdots& \\
+      \xi_\nu &=& y_n+h\sum_{i=1}^{\nu-1}a_{\nu i}f(t_n+c_ih,\xi_i)
+      \end{eqnarray}
+      $$y_{n+1}=y_n+h\sum^\nu_{j=1}b_jf(t_n+c_jh,\xi_j)$$
+      <p>$\nu$ を<strong>段数</strong>という。また近似値 $y_{n+1}$ を $y_n$ から計算するときに発生する誤差の大きさが $O(h^{p+1})$ のとき、その公式は $p$ 次精度を持つといい、$p$ を<strong>次数</strong>という。</p>
+      <p>$^T\vec{b}=(b_1,b_2,\cdots,b_\nu)$ を<strong>重み(weight)</strong>、$^T\vec{c}=(c_1,c_2,\cdots,c_\nu)$ を<strong>ノード(node)</strong>という。</p>
+      <p>行列 $A=(a_{ji})_{j,i=1,2,\cdots,\nu}$ は<strong>RK行列</strong>と呼ばれる。上記の式でもそうだが、$i \le j$ に対して $a_{ij}=0$ を満たす方法を総称して <strong>陽的Runge-Kutta法</strong>といい、そうでないものを<strong>陰的Runge-Kutta法</strong>という。</p>
+    </section>
+    <h2>Butcher 配列</h2>
+    <p><strong>Butcher 配列</strong>を使えば、Runge-Kutta法のそれぞれの係数が一目でわかる。</p>
+    <p>Runge-Kutta法が次のような式で与えられたとき:</p>
+    $$y_{n+1}=y_n+h\sum_{i=1}^sb_ik_i$$
+    $$k_i=f\left(t_n+c_ih,\,y_n+h\sum_{j=1}^{i-1}a_{ij}k_j\right)$$
+    <p>Butcher 配列は次のようになる。</p>
+    \begin{array}{c|cccc}
+    c_1 & a_{11} & a_{12} & \cdots & a_{1s} \\
+    c_2 & a_{21} & a_{22} & \cdots & a_{2s} \\
+    \vdots & \vdots & \vdots & \ddots & \vdots \\
+    c_s & a_{s1} & a_{a2} & \cdots & a_{ss} \\ \hline
+    & b_1 & b_2 & \cdots & b_s
+    \end{array}
+    <p>$4$ 次のRunge-Kutta法は次のように表すことができる。</p>
+    \begin{array}{c|cccc}
+    0 & 0 & 0 & 0 & 0 \\
+    1/2 & 1/2 & 0 & 0 & 0 \\
+    1/2 & 0 & 1/2 & 0 & 0 \\
+    1 & 0 & 0 & 1 & 0 \\ \hline
+    & 1/6 & 1/3 & 1/3 & 1/6
+    \end{array}
+    <h2>埋め込み型Runge-Kutta法</h2>
+    <p>Runge-Kutta法は局所誤差を精確に計算するのが難しい。誤差を精確に計算するために開発されたのが<strong>埋め込み型Runge-Kutta法</strong>である。</p>
+    
+    <script src="index.js"></script>
+    <script>
+    MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['$$', '$$']]
+      }
+    };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+  </body>
+</html>
